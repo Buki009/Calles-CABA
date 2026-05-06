@@ -143,11 +143,11 @@ body{font-family:var(--fb);background:var(--bg);color:var(--text);overflow-x:hid
 .bpath:hover{fill:rgba(116,172,223,.18);stroke-width:1.8}
 .blabel{
   font-family:'Syne',sans-serif;
-  font-size:5.5px;font-weight:700;
+  font-size:11px;font-weight:700;
   fill:rgba(116,172,223,.65);
   text-anchor:middle;dominant-baseline:central;
   pointer-events:none;
-  text-transform:uppercase;letter-spacing:.4px;
+  text-transform:uppercase;letter-spacing:.5px;
 }
 .bgroup:hover .blabel{fill:#74acdf}
 
@@ -478,231 +478,259 @@ footer a{color:inherit;text-decoration:none}
   <div id="map-section">
     <p class="map-label">Ciudad Autónoma de Buenos Aires · Hacé click en tu barrio</p>
     <div id="map-wrap">
-      <svg id="caba-svg" viewBox="0 0 500 560" xmlns="http://www.w3.org/2000/svg">
-        <!-- Outer CABA border -->
-        <path id="caba-border"
-          d="M280,10 L360,10 L420,30 L460,60 L490,100 L495,150 L490,200
-             L485,240 L480,280 L470,320 L460,360 L445,400 L420,430
-             L395,455 L365,475 L335,490 L305,505 L280,515 L255,520
-             L230,518 L205,510 L182,498 L160,480 L138,458 L118,430
-             L100,400 L84,368 L70,335 L58,300 L48,265 L40,228
-             L36,190 L36,150 L42,112 L55,78 L76,50 L106,28 L145,14 L190,8 Z"
-          fill="none" stroke="rgba(116,172,223,.3)" stroke-width="1.5"/>
+      <svg id="caba-svg" viewBox="0 0 960 960" xmlns="http://www.w3.org/2000/svg">
+        <!--
+          Coordenadas trazadas directamente sobre la imagen de referencia (960×960 px).
+          Cada barrio es un polígono cerrado. Los bordes respetan la forma real de CABA.
+        -->
 
-        <!-- BARRIOS — drawn as polygons matching the real CABA map shape -->
-        <!-- Each barrio is a <g class="bgroup"> containing a <path class="bpath"> and a <text class="blabel"> -->
-        <!-- Coordinates based on the reference map image, scaled to 500x560 viewBox -->
-
-        <!-- NORTE -->
+        <!-- ══ NORTE ══ -->
         <g class="bgroup" data-n="Núñez">
-          <path class="bpath" d="M310,12 L410,12 L415,28 L415,60 L370,68 L320,60 L308,40 Z"/>
-          <text class="blabel" x="363" y="36">Núñez</text>
+          <path class="bpath" d="M460,20 L600,18 L610,30 L620,80 L610,100 L555,115 L500,105 L460,90 L445,55 Z"/>
+          <text class="blabel" x="538" y="65">Núñez</text>
         </g>
+
         <g class="bgroup" data-n="Saavedra">
-          <path class="bpath" d="M175,12 L308,12 L308,40 L320,60 L280,72 L245,75 L205,72 L168,58 L158,38 Z"/>
-          <text class="blabel" x="240" y="42">Saavedra</text>
+          <path class="bpath" d="M235,40 L445,20 L460,20 L445,55 L460,90 L430,130 L385,145 L330,148 L280,140 L240,125 L220,85 Z"/>
+          <text class="blabel" x="345" y="88">Saavedra</text>
         </g>
+
         <g class="bgroup" data-n="Belgrano">
-          <path class="bpath" d="M280,72 L320,60 L370,68 L415,60 L415,100 L415,120 L390,130 L355,132 L315,125 L280,115 L270,95 Z"/>
-          <text class="blabel" x="348" y="95">Belgrano</text>
+          <path class="bpath" d="M500,105 L555,115 L610,100 L620,80 L680,95 L720,120 L730,165 L710,195 L670,210 L620,215 L570,205 L525,185 L500,160 L490,130 Z"/>
+          <text class="blabel" x="610" y="158">Belgrano</text>
         </g>
+
         <g class="bgroup" data-n="Coghlan">
-          <path class="bpath" d="M210,75 L245,75 L280,72 L270,95 L255,108 L225,110 L205,100 L200,82 Z"/>
-          <text class="blabel" x="237" y="90">Coghlan</text>
+          <path class="bpath" d="M385,145 L430,130 L460,90 L500,105 L490,130 L470,158 L440,165 L400,162 L375,155 Z"/>
+          <text class="blabel" x="432" y="138">Coghlan</text>
         </g>
+
         <g class="bgroup" data-n="Villa Urquiza">
-          <path class="bpath" d="M155,60 L168,58 L205,72 L200,82 L205,100 L185,115 L162,118 L145,108 L138,85 Z"/>
-          <text class="blabel" x="172" y="88">V. Urquiza</text>
-        </g>
-        <g class="bgroup" data-n="Saavedra"><!-- Villa Pueyrredón -->
-          <!-- already defined above, skip dupe -->
+          <path class="bpath" d="M280,140 L330,148 L385,145 L375,155 L370,185 L350,200 L310,205 L272,195 L258,170 Z"/>
+          <text class="blabel" x="320" y="172">V. Urquiza</text>
         </g>
 
-        <!-- SEGUNDA FILA -->
-        <g class="bgroup" data-n="Palermo">
-          <path class="bpath" d="M315,125 L355,132 L390,130 L415,120 L448,138 L465,165 L462,200 L445,215 L420,220 L390,215 L365,205 L340,190 L318,175 L308,155 L310,138 Z"/>
-          <text class="blabel" x="390" y="173">Palermo</text>
-        </g>
-        <g class="bgroup" data-n="Colegiales">
-          <path class="bpath" d="M280,115 L315,125 L310,138 L308,155 L285,162 L260,158 L250,140 L255,120 Z"/>
-          <text class="blabel" x="283" y="138">Colegiales</text>
-        </g>
-        <g class="bgroup" data-n="Chacarita">
-          <path class="bpath" d="M220,112 L255,108 L255,120 L250,140 L230,150 L205,148 L195,130 L200,115 Z"/>
-          <text class="blabel" x="225" y="130">Chacarita</text>
-        </g>
         <g class="bgroup" data-n="Villa Pueyrredón">
-          <path class="bpath" d="M118,108 L138,85 L145,108 L162,118 L162,140 L145,152 L122,148 L108,132 Z"/>
-          <text class="blabel" x="135" y="120">V. Pueyrredón</text>
-        </g>
-        <g class="bgroup" data-n="Agronomía">
-          <path class="bpath" d="M85,118 L118,108 L108,132 L100,148 L82,148 L72,132 L75,120 Z"/>
-          <text class="blabel" x="93" y="130">Agronomía</text>
-        </g>
-        <g class="bgroup" data-n="Villa Ortúzar">
-          <path class="bpath" d="M185,115 L205,100 L220,112 L200,115 L195,130 L180,132 L172,120 Z"/>
-          <text class="blabel" x="192" y="118">V. Ortúzar</text>
-        </g>
-        <g class="bgroup" data-n="Parque Chas">
-          <path class="bpath" d="M205,148 L230,150 L235,168 L215,172 L195,165 L195,152 Z"/>
-          <text class="blabel" x="215" y="159">P. Chas</text>
+          <path class="bpath" d="M200,155 L240,125 L280,140 L258,170 L248,200 L220,210 L192,200 L180,178 Z"/>
+          <text class="blabel" x="218" y="172">V. Pueyrredón</text>
         </g>
 
-        <!-- RETIRO / RECOLETA -->
-        <g class="bgroup" data-n="Retiro">
-          <path class="bpath" d="M445,215 L462,200 L480,215 L482,240 L468,248 L450,240 Z"/>
-          <text class="blabel" x="464" y="228">Retiro</text>
+        <!-- ══ SEGUNDA FILA ══ -->
+        <g class="bgroup" data-n="Palermo">
+          <path class="bpath" d="M525,185 L570,205 L620,215 L670,210 L720,230 L750,265 L755,310 L740,340 L700,345 L660,340 L620,325 L580,300 L555,270 L530,240 L510,210 Z"/>
+          <text class="blabel" x="638" y="268">Palermo</text>
         </g>
+
         <g class="bgroup" data-n="Recoleta">
-          <path class="bpath" d="M390,215 L420,220 L445,215 L450,240 L445,258 L420,268 L395,260 L375,245 L372,228 Z"/>
-          <text class="blabel" x="413" y="240">Recoleta</text>
+          <path class="bpath" d="M700,345 L740,340 L770,355 L790,385 L785,415 L760,430 L725,430 L695,415 L685,390 L688,365 Z"/>
+          <text class="blabel" x="737" y="390">Recoleta</text>
         </g>
 
-        <!-- FRANJA MEDIA NORTE -->
+        <g class="bgroup" data-n="Retiro">
+          <path class="bpath" d="M770,355 L810,340 L845,355 L855,390 L840,415 L810,425 L785,415 L790,385 Z"/>
+          <text class="blabel" x="812" y="385">Retiro</text>
+        </g>
+
+        <g class="bgroup" data-n="Colegiales">
+          <path class="bpath" d="M470,158 L500,160 L525,185 L510,210 L490,225 L458,222 L438,205 L440,178 Z"/>
+          <text class="blabel" x="484" y="192">Colegiales</text>
+        </g>
+
+        <g class="bgroup" data-n="Chacarita">
+          <path class="bpath" d="M400,162 L440,165 L438,205 L418,220 L390,222 L365,210 L362,185 Z"/>
+          <text class="blabel" x="402" y="193">Chacarita</text>
+        </g>
+
+        <g class="bgroup" data-n="Villa Ortúzar">
+          <path class="bpath" d="M350,200 L370,185 L400,162 L362,185 L355,205 L348,215 Z"/>
+          <text class="blabel" x="365" y="195">V. Ortúzar</text>
+        </g>
+
+        <g class="bgroup" data-n="Parque Chas">
+          <path class="bpath" d="M355,205 L390,222 L385,242 L360,248 L340,235 L342,218 Z"/>
+          <text class="blabel" x="364" y="228">P. Chas</text>
+        </g>
+
+        <g class="bgroup" data-n="Agronomía">
+          <path class="bpath" d="M220,210 L248,200 L258,225 L248,255 L222,262 L198,250 L192,228 Z"/>
+          <text class="blabel" x="224" y="232">Agronomía</text>
+        </g>
+
+        <!-- ══ FRANJA MEDIA NORTE ══ -->
         <g class="bgroup" data-n="Villa Crespo">
-          <path class="bpath" d="M285,162 L308,155 L318,175 L315,195 L295,205 L272,200 L258,185 L260,168 Z"/>
-          <text class="blabel" x="289" y="183">V. Crespo</text>
+          <path class="bpath" d="M458,222 L490,225 L510,245 L508,278 L480,290 L452,282 L435,260 L438,238 Z"/>
+          <text class="blabel" x="473" y="257">V. Crespo</text>
         </g>
+
         <g class="bgroup" data-n="La Paternal">
-          <path class="bpath" d="M235,168 L260,158 L260,168 L258,185 L240,190 L218,185 L215,172 Z"/>
-          <text class="blabel" x="237" y="177">La Paternal</text>
+          <path class="bpath" d="M390,222 L418,220 L438,238 L435,260 L410,268 L382,258 L375,240 Z"/>
+          <text class="blabel" x="407" y="243">La Paternal</text>
         </g>
+
         <g class="bgroup" data-n="Villa del Parque">
-          <path class="bpath" d="M100,148 L122,148 L145,152 L148,172 L130,185 L105,182 L88,168 L82,150 Z"/>
-          <text class="blabel" x="116" y="165">V. del Parque</text>
+          <path class="bpath" d="M192,200 L220,210 L222,238 L215,265 L188,272 L162,260 L158,235 L168,212 Z"/>
+          <text class="blabel" x="190" y="237">V. del Parque</text>
         </g>
-        <g class="bgroup" data-n="Devoto">
-          <path class="bpath" d="M60,118 L85,118 L75,120 L72,132 L82,148 L82,150 L62,155 L48,145 L45,128 Z"/>
-          <text class="blabel" x="64" y="136">Devoto</text>
+
+        <g class="bgroup" data-n="Villa Devoto">
+          <path class="bpath" d="M120,195 L155,180 L180,178 L192,200 L168,212 L158,235 L138,240 L112,228 L105,208 Z"/>
+          <text class="blabel" x="147" y="212">V. Devoto</text>
         </g>
+
         <g class="bgroup" data-n="Villa Gral. Mitre">
-          <path class="bpath" d="M195,152 L205,148 L215,172 L218,185 L200,192 L182,188 L178,172 Z"/>
-          <text class="blabel" x="198" y="170">V.G.Mitre</text>
+          <path class="bpath" d="M342,218 L365,210 L375,240 L360,248 L342,248 L328,240 L328,228 Z"/>
+          <text class="blabel" x="350" y="234">V.G.Mitre</text>
         </g>
+
         <g class="bgroup" data-n="Villa Santa Rita">
-          <path class="bpath" d="M130,185 L148,172 L162,178 L165,198 L148,208 L128,205 L112,195 L112,182 Z"/>
-          <text class="blabel" x="138" y="193">V. Sta. Rita</text>
+          <path class="bpath" d="M248,255 L280,248 L310,252 L312,278 L288,290 L258,285 L238,270 Z"/>
+          <text class="blabel" x="276" y="268">V. Sta. Rita</text>
         </g>
+
         <g class="bgroup" data-n="Monte Castro">
-          <path class="bpath" d="M62,155 L82,150 L88,168 L85,185 L65,188 L50,178 L48,162 Z"/>
-          <text class="blabel" x="66" y="170">Monte Castro</text>
+          <path class="bpath" d="M112,228 L138,240 L140,265 L118,278 L92,268 L86,248 Z"/>
+          <text class="blabel" x="113" y="253">M. Castro</text>
         </g>
-        <g class="bgroup" data-n="Versalles">
-          <path class="bpath" d="M38,170 L62,155 L48,162 L50,178 L42,190 L30,185 L30,172 Z"/>
-          <text class="blabel" x="40" y="172">Versalles</text>
-        </g>
+
         <g class="bgroup" data-n="Villa Real">
-          <path class="bpath" d="M30,155 L48,145 L62,155 L38,170 L30,172 Z"/>
-          <text class="blabel" x="38" y="160">V. Real</text>
+          <path class="bpath" d="M62,220 L92,210 L105,208 L112,228 L86,248 L62,245 L50,232 Z"/>
+          <text class="blabel" x="78" y="228">V. Real</text>
         </g>
 
-        <!-- FRANJA MEDIA -->
+        <g class="bgroup" data-n="Versalles">
+          <path class="bpath" d="M42,255 L62,245 L86,248 L86,270 L68,282 L42,278 L35,266 Z"/>
+          <text class="blabel" x="62" y="263">Versalles</text>
+        </g>
+
+        <!-- ══ FRANJA MEDIA ══ -->
         <g class="bgroup" data-n="Almagro">
-          <path class="bpath" d="M318,175 L340,190 L342,210 L325,225 L302,220 L295,205 L315,195 Z"/>
-          <text class="blabel" x="320" y="200">Almagro</text>
+          <path class="bpath" d="M508,278 L535,272 L558,285 L558,318 L532,332 L505,322 L488,305 L488,290 Z"/>
+          <text class="blabel" x="523" y="302">Almagro</text>
         </g>
+
         <g class="bgroup" data-n="Balvanera">
-          <path class="bpath" d="M340,190 L365,205 L368,225 L355,238 L335,238 L325,225 L342,210 Z"/>
-          <text class="blabel" x="348" y="215">Balvanera</text>
+          <path class="bpath" d="M558,285 L590,278 L618,290 L622,322 L598,335 L570,330 L558,318 Z"/>
+          <text class="blabel" x="590" y="308">Balvanera</text>
         </g>
+
         <g class="bgroup" data-n="San Nicolás">
-          <path class="bpath" d="M395,260 L420,268 L425,290 L415,305 L395,308 L378,295 L375,275 Z"/>
-          <text class="blabel" x="400" y="283">San Nicolás</text>
-        </g>
-        <g class="bgroup" data-n="Puerto Madero">
-          <path class="bpath" d="M450,240 L468,248 L482,260 L485,300 L478,330 L465,340 L455,320 L452,290 L448,262 Z"/>
-          <text class="blabel" x="467" y="292">Pto. Madero</text>
-        </g>
-        <g class="bgroup" data-n="Caballito">
-          <path class="bpath" d="M240,190 L258,185 L272,200 L272,222 L255,235 L230,232 L218,218 L218,200 Z"/>
-          <text class="blabel" x="246" y="212">Caballito</text>
+          <path class="bpath" d="M695,415 L725,430 L738,455 L730,478 L705,485 L682,472 L675,448 L680,425 Z"/>
+          <text class="blabel" x="707" y="450">San Nicolás</text>
         </g>
 
-        <!-- FRANJA MEDIA SUR -->
-        <g class="bgroup" data-n="Boedo">
-          <path class="bpath" d="M302,220 L325,225 L328,248 L312,260 L292,255 L285,240 L295,225 Z"/>
-          <text class="blabel" x="307" y="238">Boedo</text>
-        </g>
-        <g class="bgroup" data-n="San Cristóbal">
-          <path class="bpath" d="M335,238 L355,238 L365,255 L358,272 L338,275 L325,262 L328,248 Z"/>
-          <text class="blabel" x="344" y="256">San Cristóbal</text>
-        </g>
         <g class="bgroup" data-n="Montserrat">
-          <path class="bpath" d="M368,225 L390,228 L395,248 L395,260 L375,245 L372,228 Z"/>
-          <text class="blabel" x="382" y="239">Montserrat</text>
+          <path class="bpath" d="M730,478 L762,472 L775,490 L768,515 L742,520 L718,508 L705,490 Z"/>
+          <text class="blabel" x="741" y="495">Montserrat</text>
         </g>
+
+        <g class="bgroup" data-n="Puerto Madero">
+          <path class="bpath" d="M840,415 L875,420 L900,450 L905,500 L895,540 L875,555 L852,545 L840,510 L835,470 Z"/>
+          <text class="blabel" x="870" y="483">Pto. Madero</text>
+        </g>
+
+        <g class="bgroup" data-n="Caballito">
+          <path class="bpath" d="M382,258 L410,268 L420,295 L418,325 L390,335 L360,325 L348,302 L355,272 Z"/>
+          <text class="blabel" x="385" y="298">Caballito</text>
+        </g>
+
+        <!-- ══ FRANJA MEDIA SUR ══ -->
+        <g class="bgroup" data-n="Boedo">
+          <path class="bpath" d="M488,305 L505,322 L508,352 L482,362 L458,350 L452,325 L462,305 Z"/>
+          <text class="blabel" x="480" y="332">Boedo</text>
+        </g>
+
+        <g class="bgroup" data-n="San Cristóbal">
+          <path class="bpath" d="M570,330 L598,335 L608,362 L598,385 L572,388 L548,375 L545,350 L555,335 Z"/>
+          <text class="blabel" x="576" y="358">San Cristóbal</text>
+        </g>
+
         <g class="bgroup" data-n="San Telmo">
-          <path class="bpath" d="M375,245 L395,248 L395,260 L378,295 L362,290 L358,272 L365,255 Z"/>
-          <text class="blabel" x="378" y="268">San Telmo</text>
+          <path class="bpath" d="M742,520 L768,515 L780,540 L772,565 L748,572 L725,558 L720,535 Z"/>
+          <text class="blabel" x="750" y="543">San Telmo</text>
         </g>
+
         <g class="bgroup" data-n="Constitución">
-          <path class="bpath" d="M338,275 L358,272 L362,290 L355,310 L335,312 L322,298 L325,282 Z"/>
-          <text class="blabel" x="342" y="292">Constitución</text>
+          <path class="bpath" d="M705,490 L718,508 L725,535 L710,555 L685,555 L668,538 L665,515 L678,498 Z"/>
+          <text class="blabel" x="695" y="522">Constitución</text>
         </g>
+
         <g class="bgroup" data-n="Flores">
-          <path class="bpath" d="M165,198 L182,188 L200,192 L218,200 L218,218 L215,240 L195,252 L170,248 L152,235 L148,215 Z"/>
-          <text class="blabel" x="185" y="220">Flores</text>
+          <path class="bpath" d="M310,278 L348,275 L360,302 L355,338 L328,352 L295,345 L270,328 L268,300 Z"/>
+          <text class="blabel" x="313" y="312">Flores</text>
         </g>
+
         <g class="bgroup" data-n="Floresta">
-          <path class="bpath" d="M112,195 L128,205 L130,222 L115,232 L98,228 L90,212 L100,198 Z"/>
-          <text class="blabel" x="110" y="213">Floresta</text>
+          <path class="bpath" d="M215,265 L248,258 L258,285 L252,312 L225,322 L198,310 L192,285 Z"/>
+          <text class="blabel" x="224" y="292">Floresta</text>
         </g>
+
         <g class="bgroup" data-n="Villa Luro">
-          <path class="bpath" d="M85,185 L105,182 L112,195 L100,198 L90,212 L72,208 L65,195 Z"/>
-          <text class="blabel" x="88" y="196">V. Luro</text>
+          <path class="bpath" d="M158,262 L188,272 L192,298 L180,318 L155,322 L132,308 L130,285 L142,268 Z"/>
+          <text class="blabel" x="160" y="293">V. Luro</text>
         </g>
+
         <g class="bgroup" data-n="Vélez Sarsfield">
-          <path class="bpath" d="M50,178 L65,188 L65,195 L72,208 L55,215 L38,208 L36,192 L42,182 Z"/>
-          <text class="blabel" x="53" y="196">Vélez S.</text>
+          <path class="bpath" d="M86,270 L118,278 L130,298 L122,322 L96,328 L68,315 L62,292 Z"/>
+          <text class="blabel" x="97" y="298">Vélez Sársfield</text>
         </g>
 
-        <!-- SUR -->
-        <g class="bgroup" data-n="Parque Chacabuco">
-          <path class="bpath" d="M230,232 L255,235 L258,258 L242,268 L218,265 L215,245 Z"/>
-          <text class="blabel" x="236" y="250">P. Chacabuco</text>
-        </g>
-        <g class="bgroup" data-n="Parque Patricios">
-          <path class="bpath" d="M285,240 L292,255 L295,278 L278,288 L258,282 L258,262 L272,250 Z"/>
-          <text class="blabel" x="276" y="263">P. Patricios</text>
-        </g>
-        <g class="bgroup" data-n="Barracas">
-          <path class="bpath" d="M322,298 L335,312 L338,335 L322,348 L300,345 L282,330 L278,308 L295,298 Z"/>
-          <text class="blabel" x="310" y="322">Barracas</text>
-        </g>
-        <g class="bgroup" data-n="La Boca">
-          <path class="bpath" d="M378,295 L395,308 L405,330 L398,355 L378,360 L360,345 L355,325 L355,310 Z"/>
-          <text class="blabel" x="378" y="328">La Boca</text>
-        </g>
-        <g class="bgroup" data-n="Nueva Pompeya">
-          <path class="bpath" d="M258,282 L278,288 L282,310 L265,322 L245,318 L238,300 L245,285 Z"/>
-          <text class="blabel" x="260" y="302">N. Pompeya</text>
-        </g>
-        <g class="bgroup" data-n="Parque Avellaneda">
-          <path class="bpath" d="M115,232 L130,222 L148,232 L152,252 L148,268 L128,272 L108,262 L105,245 Z"/>
-          <text class="blabel" x="128" y="249">P. Avellaneda</text>
-        </g>
-        <g class="bgroup" data-n="Mataderos">
-          <path class="bpath" d="M148,268 L168,265 L195,268 L195,288 L178,302 L155,298 L138,285 Z"/>
-          <text class="blabel" x="165" y="282">Mataderos</text>
-        </g>
         <g class="bgroup" data-n="Liniers">
-          <path class="bpath" d="M36,225 L55,215 L72,222 L75,240 L62,252 L42,248 L34,238 Z"/>
-          <text class="blabel" x="54" y="233">Liniers</text>
+          <path class="bpath" d="M35,282 L62,278 L68,302 L62,328 L38,335 L18,320 L18,298 Z"/>
+          <text class="blabel" x="42" y="307">Liniers</text>
         </g>
 
-        <!-- EXTREMO SUR -->
+        <!-- ══ SUR ══ -->
+        <g class="bgroup" data-n="Parque Chacabuco">
+          <path class="bpath" d="M418,325 L452,325 L458,358 L440,372 L408,370 L388,355 L388,338 Z"/>
+          <text class="blabel" x="423" y="349">P. Chacabuco</text>
+        </g>
+
+        <g class="bgroup" data-n="Parque Patricios">
+          <path class="bpath" d="M505,352 L532,345 L548,360 L548,390 L525,405 L498,398 L485,378 L488,360 Z"/>
+          <text class="blabel" x="517" y="377">P. Patricios</text>
+        </g>
+
+        <g class="bgroup" data-n="Barracas">
+          <path class="bpath" d="M598,385 L640,378 L668,388 L672,420 L665,450 L640,462 L608,455 L585,435 L580,408 Z"/>
+          <text class="blabel" x="628" y="420">Barracas</text>
+        </g>
+
+        <g class="bgroup" data-n="La Boca">
+          <path class="bpath" d="M748,572 L772,565 L790,582 L792,612 L770,628 L745,620 L730,600 L732,578 Z"/>
+          <text class="blabel" x="762" y="598">La Boca</text>
+        </g>
+
+        <g class="bgroup" data-n="Nueva Pompeya">
+          <path class="bpath" d="M458,372 L495,370 L510,390 L510,418 L485,428 L458,418 L445,400 L448,382 Z"/>
+          <text class="blabel" x="479" y="399">N. Pompeya</text>
+        </g>
+
+        <g class="bgroup" data-n="Parque Avellaneda">
+          <path class="bpath" d="M225,338 L265,328 L272,355 L265,382 L235,390 L205,378 L200,352 Z"/>
+          <text class="blabel" x="236" y="360">P. Avellaneda</text>
+        </g>
+
+        <g class="bgroup" data-n="Mataderos">
+          <path class="bpath" d="M130,330 L162,325 L192,332 L195,360 L178,378 L148,378 L122,362 L118,342 Z"/>
+          <text class="blabel" x="158" y="353">Mataderos</text>
+        </g>
+
+        <!-- ══ EXTREMO SUR ══ -->
         <g class="bgroup" data-n="Villa Soldati">
-          <path class="bpath" d="M215,298 L238,300 L245,318 L238,335 L218,340 L198,332 L192,315 L202,300 Z"/>
-          <text class="blabel" x="218" y="318">V. Soldati</text>
+          <path class="bpath" d="M385,390 L418,382 L435,400 L440,432 L415,448 L385,445 L365,428 L365,408 Z"/>
+          <text class="blabel" x="403" y="418">V. Soldati</text>
         </g>
+
         <g class="bgroup" data-n="Villa Lugano">
-          <path class="bpath" d="M155,315 L178,302 L195,315 L202,335 L198,355 L178,365 L155,360 L140,345 L140,328 Z"/>
-          <text class="blabel" x="170" y="335">V. Lugano</text>
+          <path class="bpath" d="M200,382 L235,375 L265,385 L272,415 L260,442 L225,452 L192,440 L182,415 Z"/>
+          <text class="blabel" x="227" y="412">V. Lugano</text>
         </g>
+
         <g class="bgroup" data-n="Villa Riachuelo">
-          <path class="bpath" d="M178,365 L198,358 L215,368 L218,390 L200,400 L178,395 L162,382 Z"/>
-          <text class="blabel" x="190" y="380">V. Riachuelo</text>
+          <path class="bpath" d="M295,428 L328,418 L355,428 L358,460 L335,475 L302,472 L278,455 L278,438 Z"/>
+          <text class="blabel" x="317" y="448">V. Riachuelo</text>
         </g>
+
       </svg>
     </div>
     <p class="map-hint">Pasá el cursor por cada barrio · Hacé click para reportar un problema</p>
@@ -955,42 +983,65 @@ function updateHeat() {
 // ══════════════════════════════════════
 async function checkSession() {
   try {
-    // Handle the OAuth redirect: Supabase sets the session from the URL hash
-    const { data: { session } } = await sb.auth.getSession();
+    console.log('[Auth] Verificando sesión existente...');
+    const { data: { session }, error: sessErr } = await sb.auth.getSession();
+    if (sessErr) console.error('[Auth] Error en getSession:', sessErr);
+
     if (session?.user) {
+      console.log('[Auth] Sesión activa encontrada:', session.user.email);
       setUser(session.user);
-      // If we just came back from Google login and there's a pending barrio, open report
+      // Si volvimos de un redirect de Google y había un barrio pendiente, abrimos el form
       const pendingBarrio = sessionStorage.getItem('pendingBarrio');
       if (pendingBarrio) {
         sessionStorage.removeItem('pendingBarrio');
         selectedBarrio = pendingBarrio;
         document.getElementById('bsel-name').textContent = pendingBarrio;
-        setTimeout(() => openModal('rmodal'), 400);
+        setTimeout(() => openModal('rmodal'), 500);
       }
+    } else {
+      console.log('[Auth] No hay sesión activa.');
     }
+
+    // Escuchar cambios de sesión en tiempo real (post-redirect)
     sb.auth.onAuthStateChange((event, s) => {
+      console.log('[Auth] onAuthStateChange →', event, s?.user?.email || 'sin usuario');
       setUser(s?.user || null);
       if (event === 'SIGNED_IN') {
         closeModal('lmodal');
+        toast('✅ ¡Bienvenido, ' + (s.user.user_metadata?.full_name || s.user.email) + '!', 'ok');
         const pendingBarrio = sessionStorage.getItem('pendingBarrio');
         if (pendingBarrio) {
           sessionStorage.removeItem('pendingBarrio');
           selectedBarrio = pendingBarrio;
           document.getElementById('bsel-name').textContent = pendingBarrio;
-          setTimeout(() => openModal('rmodal'), 400);
+          setTimeout(() => openModal('rmodal'), 500);
         }
       }
+      if (event === 'SIGNED_OUT') {
+        toast('Sesión cerrada', '');
+      }
     });
-  } catch(e) { console.warn('Auth check failed', e); }
+  } catch(e) {
+    console.error('[Auth] Excepción en checkSession:', e);
+  }
 }
 
 async function doLogin() {
-  // Save selected barrio so we can restore it after the OAuth redirect
-  if (selectedBarrio) sessionStorage.setItem('pendingBarrio', selectedBarrio);
-  const { error } = await supabase.auth.signInWithOAuth({ provider: 'google' });
-  if (error) {
-    console.error('Login error:', error.message);
-    toast('❌ Error al iniciar sesión: ' + error.message, 'err');
+  try {
+    if (selectedBarrio) sessionStorage.setItem('pendingBarrio', selectedBarrio);
+    const redirectTo = window.location.origin + window.location.pathname;
+    console.log('[Auth] Iniciando login Google. redirectTo:', redirectTo);
+    const { error } = await sb.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: redirectTo }
+    });
+    if (error) {
+      console.error('[Auth] signInWithOAuth error:', error);
+      toast('❌ Error al iniciar sesión: ' + error.message, 'err');
+    }
+  } catch(e) {
+    console.error('[Auth] Excepción en doLogin:', e);
+    toast('❌ Error inesperado. Abrí F12 para detalles.', 'err');
   }
 }
 
@@ -1109,9 +1160,9 @@ document.getElementById('nosmx').onclick        = () => closeModal('nosmodal');
 document.getElementById('nos-modal-close').onclick = () => closeModal('nosmodal');
 document.getElementById('lcnl').onclick         = () => closeModal('lmodal');
 document.getElementById('gbtn').onclick         = doLogin;
-document.getElementById('logout-btn').onclick   = async () => {
-  await sb.auth.signOut();
-  toast('Sesión cerrada', '');
+document.getElementById('logout-btn').onclick = async () => {
+  const { error } = await sb.auth.signOut();
+  if (error) console.error('[Auth] Error al cerrar sesión:', error);
 };
 
 // ══════════════════════════════════════
