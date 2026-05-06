@@ -9,406 +9,384 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
+/* ══════════════════════════════════════════════
+   TOKENS
+══════════════════════════════════════════════ */
 :root{
-  --bg:#070809;
-  --bg2:#0c0e14;
-  --panel:#111318;
-  --panel2:#181c24;
+  --bg:#070809; --bg2:#0c0e14;
+  --panel:#111318; --panel2:#181c24;
   --border:rgba(255,255,255,.08);
-  --cel:#74acdf;
-  --cel2:#5a9fd4;
-  --cel3:rgba(116,172,223,.12);
-  --blanco:#f0f4ff;
-  --star:#f4d03f;
-  --green:#34d399;
-  --red:#ff4c4c;
-  --muted:#5a6080;
-  --text:#dde2f0;
-  --nav:60px;
-  --fh:'Syne',sans-serif;
-  --fb:'DM Sans',sans-serif;
-  --r:10px;
+  --cel:#74acdf; --cel2:#5a9fd4; --cel3:rgba(116,172,223,.12);
+  --blanco:#f0f4ff; --star:#f4d03f;
+  --green:#34d399; --red:#ff4c4c; --gold:#f5a623;
+  --muted:#5a6080; --text:#dde2f0;
+  --nav:60px; --fh:"Syne",sans-serif; --fb:"DM Sans",sans-serif; --r:10px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{font-family:var(--fb);background:var(--bg);color:var(--text);overflow-x:hidden;min-height:100vh}
 
-/* NAV */
+/* ── NAV ── */
 #nav{
   position:fixed;top:0;left:0;right:0;height:var(--nav);
   display:flex;align-items:center;justify-content:space-between;
-  padding:0 24px;
-  background:rgba(7,8,9,.97);
-  backdrop-filter:blur(16px);
-  border-bottom:1px solid var(--border);
-  z-index:1000;
+  padding:0 20px;
+  background:rgba(7,8,9,.97);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);z-index:1000;
 }
 #nav::after{
-  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,var(--cel) 0%,#fff 50%,var(--cel) 100%);
-  opacity:.45;
+  content:"";position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--cel) 0%,#fff 50%,var(--cel) 100%);opacity:.45;
 }
 .logo{
-  display:flex;align-items:center;gap:10px;
-  font-family:var(--fh);font-weight:900;font-size:1.08rem;
+  display:flex;align-items:center;gap:9px;
+  font-family:var(--fh);font-weight:900;font-size:1.05rem;
   color:var(--blanco);text-decoration:none;letter-spacing:-.3px;
 }
-.logo-icon{flex-shrink:0}
 .logo-txt{display:flex;align-items:baseline;gap:7px}
 .logo-stars{display:flex;gap:2px}
-.logo-stars span{
-  color:var(--star);font-size:.65rem;
-  text-shadow:0 0 8px rgba(244,208,63,.7);
-  animation:stp 2.4s ease-in-out infinite;
-}
+.logo-stars span{color:var(--star);font-size:.62rem;text-shadow:0 0 8px rgba(244,208,63,.7);animation:stp 2.4s ease-in-out infinite}
 .logo-stars span:nth-child(2){animation-delay:.4s}
 .logo-stars span:nth-child(3){animation-delay:.8s}
-@keyframes stp{0%,100%{opacity:1;transform:scale(1) translateY(0)}50%{opacity:.5;transform:scale(.75) translateY(-1px)}}
-
-.nav-links{display:flex;align-items:center;gap:6px}
+@keyframes stp{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+.nav-links{display:flex;align-items:center;gap:5px}
 .btn{
   display:inline-flex;align-items:center;gap:6px;
-  padding:7px 16px;border-radius:50px;
-  font-family:var(--fb);font-size:.81rem;font-weight:500;
+  padding:7px 14px;border-radius:50px;
+  font-family:var(--fb);font-size:.8rem;font-weight:500;
   cursor:pointer;transition:all .18s;border:none;line-height:1;text-decoration:none;
 }
 .btn-ghost{background:transparent;color:var(--muted);border:1px solid var(--border)}
 .btn-ghost:hover{color:var(--text);border-color:rgba(255,255,255,.18)}
 .btn-cel{background:var(--cel);color:#fff;font-weight:700;box-shadow:0 0 14px rgba(116,172,223,.3)}
 .btn-cel:hover{background:var(--cel2);transform:translateY(-1px);box-shadow:0 0 22px rgba(116,172,223,.45)}
+.btn-don{
+  background:linear-gradient(135deg,#f5a623,#e8890a);
+  color:#fff;font-weight:700;
+  box-shadow:0 0 12px rgba(245,166,35,.3);
+}
+.btn-don:hover{transform:translateY(-1px);box-shadow:0 0 20px rgba(245,166,35,.5)}
 #uavatar{width:30px;height:30px;border-radius:50%;border:2px solid var(--cel);object-fit:cover;display:none}
 
-/* HERO */
+/* ── HERO ── */
 #hero{
-  padding-top:var(--nav);
-  min-height:100vh;
+  padding-top:var(--nav);min-height:100vh;
   display:flex;flex-direction:column;align-items:center;
   position:relative;overflow:hidden;
-  background:
-    linear-gradient(180deg, rgba(116,172,223,.04) 0%, transparent 40%),
-    var(--bg);
+  background:linear-gradient(180deg,rgba(116,172,223,.04) 0%,transparent 40%),var(--bg);
 }
 #hero::before{
-  content:'';position:absolute;inset:0;
-  background-image:
-    linear-gradient(rgba(116,172,223,.03) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(116,172,223,.03) 1px,transparent 1px);
-  background-size:52px 52px;
-  pointer-events:none;
+  content:"";position:absolute;inset:0;
+  background-image:linear-gradient(rgba(116,172,223,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(116,172,223,.03) 1px,transparent 1px);
+  background-size:52px 52px;pointer-events:none;
 }
-
-.hero-head{
-  padding:44px 20px 28px;
-  text-align:center;position:relative;z-index:2;
-  max-width:640px;
-}
-.hero-head h1{
-  font-family:var(--fh);font-size:clamp(1.8rem,4.5vw,2.9rem);font-weight:900;
-  color:var(--blanco);letter-spacing:-1px;line-height:1.06;margin-bottom:14px;
-}
+.hero-head{padding:40px 20px 24px;text-align:center;position:relative;z-index:2;max-width:640px}
+.hero-head h1{font-family:var(--fh);font-size:clamp(1.8rem,4.5vw,2.9rem);font-weight:900;color:var(--blanco);letter-spacing:-1px;line-height:1.06;margin-bottom:12px}
 .hero-head h1 em{color:var(--cel);font-style:normal}
-.hero-head p{font-size:.93rem;color:var(--muted);margin:0 auto 24px;line-height:1.75}
+.hero-head p{font-size:.92rem;color:var(--muted);margin:0 auto 22px;line-height:1.75}
 .hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
 
-/* MAP SECTION */
-#map-section{
-  width:100%;max-width:820px;
+/* ── MAP LAYOUT — map left, donation panel right ── */
+#map-outer{
+  width:100%;max-width:1040px;
   padding:0 16px 36px;
   position:relative;z-index:2;
+  display:flex;gap:20px;align-items:flex-start;
 }
+#map-col{flex:1;min-width:0}
+#side-col{width:220px;flex-shrink:0;display:flex;flex-direction:column;gap:14px}
+
 .map-label{
-  text-align:center;
-  font-family:var(--fh);font-size:.68rem;font-weight:700;
-  letter-spacing:2px;text-transform:uppercase;
-  color:var(--muted);margin-bottom:14px;
+  text-align:center;font-family:var(--fh);font-size:.67rem;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:12px;
 }
 #map-wrap{
-  position:relative;
-  background:var(--bg);
-  border:1px solid rgba(116,172,223,.18);
-  border-radius:16px;
-  overflow:hidden;
-  box-shadow:0 0 80px rgba(116,172,223,.06),0 0 40px rgba(0,0,0,.8) inset;
+  position:relative;background:var(--bg);
+  border:1px solid rgba(116,172,223,.18);border-radius:14px;overflow:hidden;
+  box-shadow:0 0 60px rgba(116,172,223,.06),inset 0 0 40px rgba(0,0,0,.8);
 }
 #caba-svg{width:100%;height:auto;display:block}
 
-/* Barrio styles */
-.bpath{
-  fill:#0a0c10;
-  stroke:#74acdf;
-  stroke-width:.8;
-  transition:fill .2s,stroke-width .2s;
-  cursor:pointer;
-}
-.bpath:hover{fill:rgba(116,172,223,.18);stroke-width:1.8}
+.bpath{fill:#0a0c10;stroke:#74acdf;stroke-width:.8;transition:fill .2s,stroke-width .2s,filter .2s;cursor:pointer}
+.bpath:hover{fill:rgba(116,172,223,.18);stroke-width:1.8;filter:drop-shadow(0 0 4px rgba(116,172,223,.5))}
 .blabel{
-  font-family:'Syne',sans-serif;
-  font-size:11px;font-weight:700;
-  fill:rgba(116,172,223,.65);
-  text-anchor:middle;dominant-baseline:central;
-  pointer-events:none;
-  text-transform:uppercase;letter-spacing:.5px;
+  font-family:"Syne",sans-serif;font-size:11px;font-weight:700;
+  fill:rgba(116,172,223,.6);text-anchor:middle;dominant-baseline:central;
+  pointer-events:none;text-transform:uppercase;letter-spacing:.5px;
 }
-.bgroup:hover .blabel{fill:#74acdf}
+.bgroup:hover .blabel{fill:#a8d0f0}
+.hot1{fill:rgba(230,81,0,.18)!important}
+.hot2{fill:rgba(255,61,0,.3)!important}
+.hot3{fill:rgba(183,28,28,.44)!important}
 
-/* Heat colors */
-.hot1{fill:rgba(230,81,0,.15)!important}
-.hot2{fill:rgba(255,61,0,.25)!important}
-.hot3{fill:rgba(183,28,28,.38)!important}
+/* Pick mode pulse */
+#map-wrap.pick-barrio{animation:mpulse 1.8s ease-in-out infinite}
+@keyframes mpulse{0%,100%{box-shadow:0 0 0 0 rgba(116,172,223,0),inset 0 0 40px rgba(0,0,0,.8)}50%{box-shadow:0 0 0 5px rgba(116,172,223,.28),inset 0 0 40px rgba(0,0,0,.8)}}
+#pick-hint{
+  display:none;position:absolute;top:10px;left:50%;transform:translateX(-50%);
+  z-index:10;background:rgba(116,172,223,.16);border:1px solid rgba(116,172,223,.55);
+  border-radius:50px;padding:6px 18px;font-size:.78rem;font-weight:600;color:var(--cel);
+  white-space:nowrap;pointer-events:none;animation:fadein .3s ease;
+}
+@keyframes fadein{from{opacity:0;transform:translateX(-50%) translateY(-4px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+#map-wrap.pick-barrio #pick-hint{display:block}
 
 /* Tooltip */
 #btip{
-  position:fixed;z-index:1200;
-  background:rgba(5,6,8,.95);
-  border:1px solid rgba(116,172,223,.45);
-  border-radius:8px;padding:8px 15px;
-  font-family:var(--fh);font-size:.85rem;font-weight:800;
-  color:var(--cel);pointer-events:none;
-  transform:translate(-50%,-130%);
-  white-space:nowrap;display:none;
+  position:fixed;z-index:1200;background:rgba(5,6,8,.96);
+  border:1px solid rgba(116,172,223,.5);border-radius:8px;padding:7px 14px;
+  font-family:var(--fh);font-size:.85rem;font-weight:800;color:var(--cel);
+  pointer-events:none;transform:translate(-50%,-130%);white-space:nowrap;display:none;
   box-shadow:0 6px 24px rgba(0,0,0,.6);
 }
 #btip::after{
-  content:'';position:absolute;bottom:-5px;left:50%;
-  transform:translateX(-50%) rotate(45deg);
-  width:8px;height:8px;
-  background:rgba(5,6,8,.95);
-  border-right:1px solid rgba(116,172,223,.45);
-  border-bottom:1px solid rgba(116,172,223,.45);
+  content:"";position:absolute;bottom:-5px;left:50%;
+  transform:translateX(-50%) rotate(45deg);width:8px;height:8px;
+  background:rgba(5,6,8,.96);border-right:1px solid rgba(116,172,223,.5);border-bottom:1px solid rgba(116,172,223,.5);
 }
-.map-hint{
-  text-align:center;font-size:.69rem;color:var(--muted);
-  margin-top:10px;opacity:.55;
-}
+.map-hint{text-align:center;font-size:.68rem;color:var(--muted);margin-top:8px;opacity:.5}
 
-/* STATS */
-#statsbar{
-  display:flex;justify-content:center;gap:1px;
-  padding:0 16px 44px;
-  position:relative;z-index:2;
-  flex-wrap:wrap;
+/* ── SIDE COLUMN CARDS ── */
+.side-card{
+  background:var(--panel);border:1px solid var(--border);border-radius:12px;padding:18px;
 }
-.st{
-  display:flex;flex-direction:column;align-items:center;
-  padding:12px 26px;
-  background:var(--panel);border:1px solid var(--border);
+.side-card h4{
+  font-family:var(--fh);font-size:.8rem;font-weight:800;color:var(--blanco);
+  margin-bottom:10px;letter-spacing:.3px;
 }
+.side-card p{font-size:.74rem;color:var(--muted);line-height:1.65;margin-bottom:12px}
+
+/* Legend */
+.lgrd{width:100%;height:8px;border-radius:4px;background:linear-gradient(90deg,#1a237e,#e65100,#ff3d00,#b71c1c);margin-bottom:5px}
+.lgrd-lbl{display:flex;justify-content:space-between;font-size:.62rem;color:var(--muted)}
+
+/* Donation card */
+#don-card{border-color:rgba(245,166,35,.25);background:linear-gradient(160deg,#111318,#171410)}
+#don-card h4{color:var(--gold)}
+#don-card p{color:rgba(221,226,240,.6)}
+.don-btn{
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  width:100%;padding:10px;border-radius:8px;
+  background:linear-gradient(135deg,#f5a623,#e8890a);
+  color:#fff;font-family:var(--fb);font-size:.82rem;font-weight:700;
+  border:none;cursor:pointer;text-decoration:none;
+  transition:all .2s;box-shadow:0 0 12px rgba(245,166,35,.25);
+}
+.don-btn:hover{transform:translateY(-1px);box-shadow:0 0 20px rgba(245,166,35,.45)}
+.don-note{font-size:.65rem;color:var(--muted);text-align:center;margin-top:8px;line-height:1.4}
+
+/* Stats card */
+#stats-card .srow{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)}
+#stats-card .srow:last-child{border-bottom:none}
+#stats-card .srow span:first-child{font-size:.72rem;color:var(--muted)}
+#stats-card .srow span:last-child{font-family:var(--fh);font-size:.9rem;font-weight:800;color:var(--cel)}
+
+/* ── STATS BAR (mobile) ── */
+#statsbar-mobile{
+  display:none;justify-content:center;gap:1px;
+  padding:0 16px 36px;position:relative;z-index:2;flex-wrap:wrap;
+}
+.st{display:flex;flex-direction:column;align-items:center;padding:10px 22px;background:var(--panel);border:1px solid var(--border)}
 .st:first-child{border-radius:var(--r) 0 0 var(--r)}
 .st:last-child{border-radius:0 var(--r) var(--r) 0}
 .st+.st{border-left:none}
-.st-n{font-family:var(--fh);font-size:1.45rem;font-weight:900;color:var(--cel);line-height:1}
-.st-l{font-size:.66rem;color:var(--muted);margin-top:3px;text-transform:uppercase;letter-spacing:.8px}
+.st-n{font-family:var(--fh);font-size:1.3rem;font-weight:900;color:var(--cel);line-height:1}
+.st-l{font-size:.63rem;color:var(--muted);margin-top:2px;text-transform:uppercase;letter-spacing:.8px}
 
-/* NOSOTROS SECTION */
-#nosotros{
-  background:var(--bg2);border-top:1px solid var(--border);
-  padding:64px 20px 56px;
-}
+/* ── NOSOTROS ── */
+#nosotros{background:var(--bg2);border-top:1px solid var(--border);padding:60px 20px 52px}
 .sec-inner{max-width:820px;margin:0 auto}
 .sec-tag{
-  display:inline-block;font-family:var(--fh);font-size:.67rem;font-weight:700;
-  letter-spacing:2.5px;text-transform:uppercase;
-  color:var(--cel);background:var(--cel3);
-  border:1px solid rgba(116,172,223,.25);border-radius:50px;padding:4px 14px;margin-bottom:20px;
+  display:inline-block;font-family:var(--fh);font-size:.66rem;font-weight:700;
+  letter-spacing:2.5px;text-transform:uppercase;color:var(--cel);background:var(--cel3);
+  border:1px solid rgba(116,172,223,.25);border-radius:50px;padding:4px 13px;margin-bottom:18px;
 }
-#nosotros h2{
-  font-family:var(--fh);font-size:clamp(1.4rem,3vw,2rem);font-weight:900;
-  color:var(--blanco);line-height:1.18;margin-bottom:18px;
-}
+#nosotros h2{font-family:var(--fh);font-size:clamp(1.4rem,3vw,2rem);font-weight:900;color:var(--blanco);line-height:1.18;margin-bottom:18px}
 #nosotros h2 em{color:var(--cel);font-style:normal}
 .nos-quote{
-  font-size:clamp(.95rem,1.8vw,1.1rem);color:var(--cel);font-style:italic;
-  border-left:3px solid var(--cel);padding:12px 18px;margin:24px 0;
+  font-size:clamp(.92rem,1.8vw,1.08rem);color:var(--cel);font-style:italic;
+  border-left:3px solid var(--cel);padding:12px 18px;margin:22px 0;
   background:var(--cel3);border-radius:0 var(--r) var(--r) 0;line-height:1.65;
 }
-#nosotros p{font-size:.9rem;color:var(--muted);line-height:1.85;margin-bottom:14px}
-.ticons{display:flex;gap:10px;flex-wrap:wrap;margin:20px 0}
-.tic{
-  display:flex;align-items:center;gap:7px;
-  background:var(--panel);border:1px solid var(--border);
-  border-radius:50px;padding:7px 14px;font-size:.78rem;color:var(--muted);
-  transition:all .2s;
-}
+#nosotros p{font-size:.89rem;color:var(--muted);line-height:1.85;margin-bottom:14px}
+.ticons{display:flex;gap:9px;flex-wrap:wrap;margin:18px 0}
+.tic{display:flex;align-items:center;gap:7px;background:var(--panel);border:1px solid var(--border);border-radius:50px;padding:7px 13px;font-size:.77rem;color:var(--muted);transition:all .2s}
 .tic:hover{border-color:rgba(116,172,223,.3);color:var(--text)}
-.tic span{font-size:.95rem}
 
-/* COMO */
-#como{
-  background:var(--bg);border-top:1px solid var(--border);
-  padding:64px 20px 56px;
+/* Privacy note in nosotros */
+.privacy-note{
+  background:var(--panel);border:1px solid rgba(116,172,223,.2);border-radius:var(--r);
+  padding:14px 16px;margin-top:22px;font-size:.78rem;color:var(--muted);line-height:1.65;
 }
-#como h2{
-  font-family:var(--fh);font-size:clamp(1.4rem,3vw,1.9rem);font-weight:900;
-  color:var(--blanco);text-align:center;margin-bottom:8px;
-}
+.privacy-note strong{color:var(--cel)}
+
+/* ── COMO ── */
+#como{background:var(--bg);border-top:1px solid var(--border);padding:60px 20px 52px}
+#como h2{font-family:var(--fh);font-size:clamp(1.4rem,3vw,1.9rem);font-weight:900;color:var(--blanco);text-align:center;margin-bottom:8px}
 #como h2 em{color:var(--cel);font-style:normal}
-.como-sub{text-align:center;font-size:.84rem;color:var(--muted);margin-bottom:44px}
-.steps{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;max-width:820px;margin:0 auto 32px}
+.como-sub{text-align:center;font-size:.84rem;color:var(--muted);margin-bottom:40px}
+.steps{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;max-width:820px;margin:0 auto 30px}
 .step{
-  flex:1;min-width:190px;max-width:230px;
+  flex:1;min-width:185px;max-width:225px;
   background:var(--panel);border:1px solid var(--border);
-  border-radius:12px;padding:24px 18px;
-  position:relative;overflow:hidden;transition:border-color .25s;
+  border-radius:12px;padding:22px 17px;position:relative;overflow:hidden;transition:border-color .25s;
 }
 .step:hover{border-color:rgba(116,172,223,.3)}
-.step::before{
-  content:'';position:absolute;top:0;left:0;right:0;height:2px;
-  background:linear-gradient(90deg,var(--cel),#fff);
-  opacity:0;transition:opacity .3s;
-}
+.step::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--cel),#fff);opacity:0;transition:opacity .3s}
 .step:hover::before{opacity:1}
-.step-n{font-family:var(--fh);font-size:2.8rem;font-weight:900;color:var(--cel);opacity:.18;line-height:1;margin-bottom:10px}
-.step h3{font-family:var(--fh);font-size:.93rem;font-weight:800;margin-bottom:6px;color:var(--blanco)}
-.step p{font-size:.79rem;color:var(--muted);line-height:1.65}
-.arg-div{
-  display:flex;align-items:center;justify-content:center;gap:12px;
-  margin:24px auto;color:var(--star);font-size:.75rem;letter-spacing:2px;opacity:.55;
-}
-.arg-div::before,.arg-div::after{content:'';flex:1;max-width:100px;height:1px;background:linear-gradient(90deg,transparent,var(--cel))}
+.step-n{font-family:var(--fh);font-size:2.6rem;font-weight:900;color:var(--cel);opacity:.18;line-height:1;margin-bottom:9px}
+.step h3{font-family:var(--fh);font-size:.92rem;font-weight:800;margin-bottom:5px;color:var(--blanco)}
+.step p{font-size:.78rem;color:var(--muted);line-height:1.65}
+.arg-div{display:flex;align-items:center;justify-content:center;gap:12px;margin:22px auto;color:var(--star);font-size:.74rem;letter-spacing:2px;opacity:.55}
+.arg-div::before,.arg-div::after{content:"";flex:1;max-width:100px;height:1px;background:linear-gradient(90deg,transparent,var(--cel))}
 .arg-div::after{transform:scaleX(-1)}
 
-/* FOOTER */
+/* ── FOOTER ── */
 footer{
   background:var(--bg);border-top:1px solid var(--border);
-  padding:20px 24px;
-  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;
+  padding:20px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;
 }
-footer p{font-size:.72rem;color:var(--muted)}
+footer p{font-size:.71rem;color:var(--muted)}
 footer a{color:inherit;text-decoration:none}
-.beta{font-size:.66rem;background:var(--cel3);border:1px solid rgba(116,172,223,.3);color:var(--cel);padding:3px 10px;border-radius:50px;font-weight:700;letter-spacing:.5px}
+.beta{font-size:.65rem;background:var(--cel3);border:1px solid rgba(116,172,223,.3);color:var(--cel);padding:3px 10px;border-radius:50px;font-weight:700;letter-spacing:.5px}
 
-/* OVERLAYS */
-.overlay{
-  display:none;position:fixed;inset:0;
-  background:rgba(0,0,0,.8);backdrop-filter:blur(10px);
-  z-index:2000;align-items:center;justify-content:center;padding:16px;
-}
+/* ── OVERLAYS ── */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.82);backdrop-filter:blur(10px);z-index:2000;align-items:center;justify-content:center;padding:16px}
 .overlay.open{display:flex}
 
-/* LOGIN BOX */
+/* Login box */
 #lbox{
   background:var(--panel);border:1px solid rgba(116,172,223,.22);
-  border-radius:20px;padding:38px 30px;width:100%;max-width:360px;
+  border-radius:20px;padding:36px 28px;width:100%;max-width:360px;
   text-align:center;box-shadow:0 24px 64px rgba(0,0,0,.7);
   animation:pop .25s cubic-bezier(.34,1.56,.64,1);
 }
 @keyframes pop{from{opacity:0;transform:scale(.92) translateY(12px)}to{opacity:1;transform:scale(1) translateY(0)}}
-.flag-row{display:flex;align-items:center;justify-content:center;gap:4px;margin-bottom:20px}
+.flag-row{display:flex;align-items:center;justify-content:center;gap:4px;margin-bottom:18px}
 .fb{height:8px;border-radius:2px}
 .fb.c{background:var(--cel);width:28px}
 .fb.w{background:rgba(240,244,255,.7);width:18px}
 #lbox h2{font-family:var(--fh);font-size:1.2rem;font-weight:900;margin-bottom:8px;color:var(--blanco)}
-#lbox p{font-size:.8rem;color:var(--muted);line-height:1.65;margin-bottom:26px}
+#lbox p{font-size:.79rem;color:var(--muted);line-height:1.65;margin-bottom:24px}
 .gbtn{
   width:100%;display:flex;align-items:center;justify-content:center;gap:10px;
   padding:11px 20px;background:#fff;color:#1a1a1a;
-  border:none;border-radius:var(--r);font-family:var(--fb);font-size:.88rem;font-weight:500;
+  border:none;border-radius:var(--r);font-family:var(--fb);font-size:.87rem;font-weight:500;
   cursor:pointer;transition:all .18s;
 }
 .gbtn:hover{background:#f0f0f0;transform:translateY(-1px)}
 .gbtn svg{width:18px;height:18px;flex-shrink:0}
-.clink{display:block;margin-top:14px;font-size:.75rem;color:var(--muted);cursor:pointer;background:none;border:none;font-family:var(--fb);text-decoration:underline}
+.clink{display:block;margin-top:13px;font-size:.74rem;color:var(--muted);cursor:pointer;background:none;border:none;font-family:var(--fb);text-decoration:underline}
 .clink:hover{color:var(--text)}
 
-/* REPORT BOX */
+/* Report box */
 #rbox{
   background:var(--panel);border:1px solid rgba(116,172,223,.22);
-  border-radius:20px;padding:30px 26px;width:100%;max-width:460px;
+  border-radius:20px;padding:28px 24px;width:100%;max-width:480px;
   max-height:92vh;overflow-y:auto;
   box-shadow:0 24px 64px rgba(0,0,0,.7);
-  animation:pop .25s cubic-bezier(.34,1.56,.64,1);
-  position:relative;
+  animation:pop .25s cubic-bezier(.34,1.56,.64,1);position:relative;
 }
 .mx{
-  position:absolute;top:14px;right:14px;
-  width:30px;height:30px;border-radius:50%;
-  background:var(--panel2);border:1px solid var(--border);
-  color:var(--muted);cursor:pointer;
-  display:flex;align-items:center;justify-content:center;
-  font-size:.88rem;transition:all .15s;
+  position:absolute;top:13px;right:13px;width:29px;height:29px;border-radius:50%;
+  background:var(--panel2);border:1px solid var(--border);color:var(--muted);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  font-size:.86rem;transition:all .15s;
 }
 .mx:hover{color:var(--text)}
-.prog{display:flex;align-items:center;gap:6px;margin-bottom:20px}
-.prs{
-  width:22px;height:22px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-size:.68rem;font-weight:700;flex-shrink:0;
-}
+
+/* Progress bar */
+.prog{display:flex;align-items:center;gap:5px;margin-bottom:18px}
+.prs{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.67rem;font-weight:700;flex-shrink:0}
 .prs.done{background:var(--cel);color:#fff}
 .prs.act{background:var(--blanco);color:#000}
 .prs.idle{background:var(--panel2);color:var(--muted);border:1px solid var(--border)}
 .prl{flex:1;height:1px;background:var(--border)}
-.mh{font-family:var(--fh);font-size:1.12rem;font-weight:900;color:var(--blanco);margin-bottom:4px}
-.ms{font-size:.78rem;color:var(--muted);margin-bottom:18px}
+
+.mh{font-family:var(--fh);font-size:1.1rem;font-weight:900;color:var(--blanco);margin-bottom:3px}
+.ms{font-size:.77rem;color:var(--muted);margin-bottom:16px}
+
+/* Barrio badge */
 .bsel{
   display:inline-flex;align-items:center;gap:7px;
-  font-size:.78rem;color:var(--cel);
+  font-size:.77rem;color:var(--cel);
   background:var(--cel3);border:1px solid rgba(116,172,223,.25);
-  border-radius:50px;padding:5px 14px;margin-bottom:18px;font-weight:700;
+  border-radius:50px;padding:5px 13px;margin-bottom:16px;font-weight:700;
 }
-.fg{margin-bottom:15px}
-.fg label{display:block;font-size:.69rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;margin-bottom:7px}
-.addr-row{display:grid;grid-template-columns:1fr 90px;gap:8px}
-.fg input,.fg textarea{
-  width:100%;padding:10px 14px;
+
+/* Form fields */
+.fg{margin-bottom:14px}
+.fg label{display:block;font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.7px;margin-bottom:6px}
+.addr-row{display:grid;grid-template-columns:1fr 85px;gap:7px}
+.fg input,.fg select,.fg textarea{
+  width:100%;padding:9px 13px;
   background:var(--panel2);border:1px solid var(--border);
-  border-radius:var(--r);color:var(--text);font-family:var(--fb);font-size:.86rem;
+  border-radius:var(--r);color:var(--text);font-family:var(--fb);font-size:.85rem;
   outline:none;transition:border-color .15s;
 }
-.fg input:focus,.fg textarea:focus{border-color:var(--cel);box-shadow:0 0 0 3px rgba(116,172,223,.1)}
+.fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--cel);box-shadow:0 0 0 3px rgba(116,172,223,.1)}
 .fg textarea{resize:vertical}
-.prob-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.fg select option{background:#181c24}
+
+/* Problem type grid */
+.prob-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:0}
 .popt{
-  background:var(--panel2);border:1px solid var(--border);
-  border-radius:var(--r);padding:11px 12px;
-  cursor:pointer;display:flex;align-items:flex-start;gap:8px;
-  font-size:.78rem;color:var(--muted);transition:all .15s;
-  user-select:none;line-height:1.4;
+  background:var(--panel2);border:1px solid var(--border);border-radius:var(--r);
+  padding:10px 11px;cursor:pointer;display:flex;align-items:flex-start;gap:7px;
+  font-size:.77rem;color:var(--muted);transition:all .15s;user-select:none;line-height:1.4;
 }
 .popt input{display:none}
-.popt .ic{font-size:1.05rem;flex-shrink:0;margin-top:1px}
-.popt:hover{border-color:rgba(255,255,255,.14);color:var(--text)}
+.popt .ic{font-size:1rem;flex-shrink:0;margin-top:1px}
+.popt:hover{border-color:rgba(255,255,255,.13);color:var(--text)}
 .popt.sel{border-color:var(--cel);background:rgba(116,172,223,.1);color:var(--blanco)}
 .popt.full{grid-column:span 2}
+
+/* Confirmation badge */
 .conf-badge{
   display:none;align-items:center;gap:8px;
-  padding:10px 14px;margin-bottom:14px;
-  background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.28);
-  border-radius:var(--r);font-size:.77rem;color:var(--green);line-height:1.4;
+  padding:9px 13px;margin:10px 0;
+  background:rgba(52,211,153,.07);border:1px solid rgba(52,211,153,.28);
+  border-radius:var(--r);font-size:.76rem;color:var(--green);line-height:1.4;
 }
-#sbtn{width:100%;padding:13px;margin-top:6px;font-size:.9rem;font-weight:700;border-radius:var(--r)}
 
-/* NOSOTROS MODAL */
+/* Privacy consent */
+.consent-row{
+  display:flex;align-items:flex-start;gap:9px;
+  margin:12px 0;padding:10px 13px;
+  background:var(--panel2);border:1px solid var(--border);border-radius:var(--r);
+  font-size:.74rem;color:var(--muted);line-height:1.55;cursor:pointer;
+}
+.consent-row input[type=checkbox]{
+  flex-shrink:0;margin-top:2px;accent-color:var(--cel);width:14px;height:14px;cursor:pointer;
+}
+.consent-row a{color:var(--cel);text-decoration:underline}
+
+#sbtn{width:100%;padding:12px;margin-top:4px;font-size:.89rem;font-weight:700;border-radius:var(--r)}
+
+/* Nosotros modal */
 #nosbox{
   background:var(--panel);border:1px solid rgba(116,172,223,.22);
-  border-radius:20px;padding:34px 28px;width:100%;max-width:520px;
+  border-radius:20px;padding:32px 26px;width:100%;max-width:520px;
   max-height:88vh;overflow-y:auto;
   box-shadow:0 24px 64px rgba(0,0,0,.7);
-  animation:pop .25s cubic-bezier(.34,1.56,.64,1);
-  position:relative;
+  animation:pop .25s cubic-bezier(.34,1.56,.64,1);position:relative;
 }
-#nosbox h2{font-family:var(--fh);font-size:1.25rem;font-weight:900;color:var(--blanco);margin-bottom:6px}
+#nosbox h2{font-family:var(--fh);font-size:1.22rem;font-weight:900;color:var(--blanco);margin-bottom:5px}
 #nosbox h2 em{color:var(--cel);font-style:normal}
-#nosbox .nq{
-  font-size:.95rem;color:var(--cel);font-style:italic;
-  border-left:3px solid var(--cel);padding:10px 16px;margin:16px 0;
-  background:var(--cel3);border-radius:0 8px 8px 0;line-height:1.65;
-}
-#nosbox p{font-size:.82rem;color:var(--muted);line-height:1.8;margin-bottom:12px}
-#nosbox .ntag{display:flex;gap:7px;flex-wrap:wrap;margin:12px 0}
-#nosbox .ntag span{background:var(--panel2);border:1px solid var(--border);border-radius:50px;padding:5px 13px;font-size:.75rem;color:var(--muted)}
-#nosbox .nbtns{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+#nosbox .nq{font-size:.93rem;color:var(--cel);font-style:italic;border-left:3px solid var(--cel);padding:10px 15px;margin:14px 0;background:var(--cel3);border-radius:0 8px 8px 0;line-height:1.65}
+#nosbox p{font-size:.81rem;color:var(--muted);line-height:1.8;margin-bottom:11px}
+#nosbox .ntag{display:flex;gap:7px;flex-wrap:wrap;margin:11px 0}
+#nosbox .ntag span{background:var(--panel2);border:1px solid var(--border);border-radius:50px;padding:5px 12px;font-size:.74rem;color:var(--muted)}
+#nosbox .nbtns{display:flex;gap:9px;flex-wrap:wrap;margin-top:16px}
 
-/* TOAST */
+/* Toast */
 #toast{
   position:fixed;bottom:22px;left:50%;
   transform:translateX(-50%) translateY(70px);
-  z-index:3500;
-  background:var(--panel);border:1px solid var(--border);
-  border-radius:50px;padding:11px 22px;
-  font-size:.82rem;color:var(--text);
-  box-shadow:0 8px 32px rgba(0,0,0,.5);
-  white-space:nowrap;display:flex;align-items:center;gap:7px;
+  z-index:3500;background:var(--panel);border:1px solid var(--border);
+  border-radius:50px;padding:10px 20px;font-size:.81rem;color:var(--text);
+  box-shadow:0 8px 32px rgba(0,0,0,.5);white-space:nowrap;
+  display:flex;align-items:center;gap:7px;
   transition:transform .3s cubic-bezier(.34,1.56,.64,1),opacity .3s;
   opacity:0;pointer-events:none;
 }
@@ -416,6 +394,13 @@ footer a{color:inherit;text-decoration:none}
 #toast.ok{border-color:var(--green)}
 #toast.err{border-color:var(--red)}
 
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  #map-outer{flex-direction:column}
+  #side-col{width:100%;flex-direction:row;flex-wrap:wrap}
+  #side-col .side-card{flex:1;min-width:200px}
+  #statsbar-mobile{display:flex}
+}
 @media(max-width:600px){
   .nav-links .btn-ghost:not(#logout-btn){display:none}
   .steps{flex-direction:column}
@@ -423,10 +408,8 @@ footer a{color:inherit;text-decoration:none}
   .prob-grid{grid-template-columns:1fr}
   .popt.full{grid-column:span 1}
   .addr-row{grid-template-columns:1fr}
-  #statsbar{flex-wrap:wrap}
-  .st:first-child{border-radius:var(--r) 0 0 0}
-  .st:last-child{border-radius:0 var(--r) var(--r) 0}
   footer{justify-content:center;text-align:center}
+  .hero-head h1{font-size:1.7rem}
 }
 ::-webkit-scrollbar{width:5px}
 ::-webkit-scrollbar-track{background:var(--bg)}
@@ -435,10 +418,10 @@ footer a{color:inherit;text-decoration:none}
 </head>
 <body>
 
-<!-- NAV -->
+<!-- ══ NAV ══ -->
 <nav id="nav">
   <a class="logo" href="#hero">
-    <svg class="logo-icon" width="22" height="22" viewBox="0 0 100 100">
+    <svg width="20" height="20" viewBox="0 0 100 100" style="flex-shrink:0">
       <circle cx="50" cy="50" r="16" fill="#f4d03f"/>
       <rect x="47" y="5"  width="6" height="20" rx="3" fill="#f4d03f"/>
       <rect x="47" y="75" width="6" height="20" rx="3" fill="#f4d03f"/>
@@ -457,295 +440,287 @@ footer a{color:inherit;text-decoration:none}
   <div class="nav-links">
     <button class="btn btn-ghost" id="nos-nav">Nosotros</button>
     <button class="btn btn-ghost" id="como-nav">¿Cómo funciona?</button>
+    <button class="btn btn-don" id="don-nav">💛 Donar</button>
     <img id="uavatar" src="" alt=""/>
     <button class="btn btn-cel" id="rep-nav">＋ Reportar</button>
     <button class="btn btn-ghost" id="logout-btn" style="display:none">Salir</button>
   </div>
 </nav>
 
-<!-- HERO -->
+<!-- ══ HERO ══ -->
 <section id="hero">
   <div class="hero-head">
     <h1>Las calles de <em>Buenos Aires</em><br>son de todos</h1>
-    <p>Reportá pozos, deformaciones y problemas viales en tu barrio.<br>Tu voz suma al mapa. Entre todos hacemos la diferencia.</p>
+    <p>Reportá pozos, deformaciones y problemas viales en tu barrio.<br>Tu voz suma al mapa. Entre todos hacemos la diferencia. 🇦🇷</p>
     <div class="hero-btns">
       <button class="btn btn-cel" style="font-size:.9rem;padding:11px 26px" id="hero-rep">＋ Reportar un problema</button>
       <button class="btn btn-ghost" style="font-size:.9rem;padding:11px 26px" id="hero-nos">¿Quiénes somos?</button>
     </div>
   </div>
 
-  <!-- SVG MAP -->
-  <div id="map-section">
-    <p class="map-label">Ciudad Autónoma de Buenos Aires · Hacé click en tu barrio</p>
-    <div id="map-wrap">
-      <svg id="caba-svg" viewBox="0 0 960 960" xmlns="http://www.w3.org/2000/svg">
-        <!--
-          Coordenadas trazadas directamente sobre la imagen de referencia (960×960 px).
-          Cada barrio es un polígono cerrado. Los bordes respetan la forma real de CABA.
-        -->
+  <!-- MAP + SIDE COLUMN -->
+  <div id="map-outer">
+    <!-- MAP -->
+    <div id="map-col">
+      <p class="map-label">Ciudad Autónoma de Buenos Aires · Hacé click en tu barrio</p>
+      <div id="map-wrap">
+        <div id="pick-hint">👇 Seleccioná tu barrio para reportar</div>
+        <svg id="caba-svg" viewBox="0 0 960 960" xmlns="http://www.w3.org/2000/svg">
 
-        <!-- ══ NORTE ══ -->
-        <g class="bgroup" data-n="Núñez">
-          <path class="bpath" d="M460,20 L600,18 L610,30 L620,80 L610,100 L555,115 L500,105 L460,90 L445,55 Z"/>
-          <text class="blabel" x="538" y="65">Núñez</text>
-        </g>
+          <!-- NORTE -->
+          <g class="bgroup" data-n="Núñez">
+            <path class="bpath" d="M460,20 L600,18 L610,30 L620,80 L610,100 L555,115 L500,105 L460,90 L445,55 Z"/>
+            <text class="blabel" x="538" y="65">Núñez</text>
+          </g>
+          <g class="bgroup" data-n="Saavedra">
+            <path class="bpath" d="M235,40 L445,20 L460,20 L445,55 L460,90 L430,130 L385,145 L330,148 L280,140 L240,125 L220,85 Z"/>
+            <text class="blabel" x="345" y="88">Saavedra</text>
+          </g>
+          <g class="bgroup" data-n="Belgrano">
+            <path class="bpath" d="M500,105 L555,115 L610,100 L620,80 L680,95 L720,120 L730,165 L710,195 L670,210 L620,215 L570,205 L525,185 L500,160 L490,130 Z"/>
+            <text class="blabel" x="612" y="158">Belgrano</text>
+          </g>
+          <g class="bgroup" data-n="Coghlan">
+            <path class="bpath" d="M385,145 L430,130 L460,90 L500,105 L490,130 L470,158 L440,165 L400,162 L375,155 Z"/>
+            <text class="blabel" x="432" y="138">Coghlan</text>
+          </g>
+          <g class="bgroup" data-n="Villa Urquiza">
+            <path class="bpath" d="M280,140 L330,148 L385,145 L375,155 L370,185 L350,200 L310,205 L272,195 L258,170 Z"/>
+            <text class="blabel" x="320" y="172">V. Urquiza</text>
+          </g>
+          <g class="bgroup" data-n="Villa Pueyrredón">
+            <path class="bpath" d="M200,155 L240,125 L280,140 L258,170 L248,200 L220,210 L192,200 L180,178 Z"/>
+            <text class="blabel" x="218" y="175">V. Pueyrredón</text>
+          </g>
 
-        <g class="bgroup" data-n="Saavedra">
-          <path class="bpath" d="M235,40 L445,20 L460,20 L445,55 L460,90 L430,130 L385,145 L330,148 L280,140 L240,125 L220,85 Z"/>
-          <text class="blabel" x="345" y="88">Saavedra</text>
-        </g>
+          <!-- SEGUNDA FILA -->
+          <g class="bgroup" data-n="Palermo">
+            <path class="bpath" d="M525,185 L570,205 L620,215 L670,210 L720,230 L750,265 L755,310 L740,340 L700,345 L660,340 L620,325 L580,300 L555,270 L530,240 L510,210 Z"/>
+            <text class="blabel" x="638" y="268">Palermo</text>
+          </g>
+          <g class="bgroup" data-n="Recoleta">
+            <path class="bpath" d="M700,345 L740,340 L770,355 L790,385 L785,415 L760,430 L725,430 L695,415 L685,390 L688,365 Z"/>
+            <text class="blabel" x="737" y="390">Recoleta</text>
+          </g>
+          <g class="bgroup" data-n="Retiro">
+            <path class="bpath" d="M770,355 L810,340 L845,355 L855,390 L840,415 L810,425 L785,415 L790,385 Z"/>
+            <text class="blabel" x="812" y="385">Retiro</text>
+          </g>
+          <g class="bgroup" data-n="Colegiales">
+            <path class="bpath" d="M470,158 L500,160 L525,185 L510,210 L490,225 L458,222 L438,205 L440,178 Z"/>
+            <text class="blabel" x="484" y="193">Colegiales</text>
+          </g>
+          <g class="bgroup" data-n="Chacarita">
+            <path class="bpath" d="M400,162 L440,165 L438,205 L418,220 L390,222 L365,210 L362,185 Z"/>
+            <text class="blabel" x="402" y="193">Chacarita</text>
+          </g>
+          <g class="bgroup" data-n="Villa Ortúzar">
+            <path class="bpath" d="M350,200 L370,185 L400,162 L362,185 L355,205 L348,215 Z"/>
+            <text class="blabel" x="362" y="196">V. Ortúzar</text>
+          </g>
+          <g class="bgroup" data-n="Parque Chas">
+            <path class="bpath" d="M355,205 L390,222 L385,242 L360,248 L340,235 L342,218 Z"/>
+            <text class="blabel" x="364" y="228">P. Chas</text>
+          </g>
+          <g class="bgroup" data-n="Agronomía">
+            <path class="bpath" d="M220,210 L248,200 L258,225 L248,255 L222,262 L198,250 L192,228 Z"/>
+            <text class="blabel" x="224" y="232">Agronomía</text>
+          </g>
 
-        <g class="bgroup" data-n="Belgrano">
-          <path class="bpath" d="M500,105 L555,115 L610,100 L620,80 L680,95 L720,120 L730,165 L710,195 L670,210 L620,215 L570,205 L525,185 L500,160 L490,130 Z"/>
-          <text class="blabel" x="610" y="158">Belgrano</text>
-        </g>
+          <!-- FRANJA MEDIA NORTE -->
+          <g class="bgroup" data-n="Villa Crespo">
+            <path class="bpath" d="M458,222 L490,225 L510,245 L508,278 L480,290 L452,282 L435,260 L438,238 Z"/>
+            <text class="blabel" x="473" y="257">V. Crespo</text>
+          </g>
+          <g class="bgroup" data-n="La Paternal">
+            <path class="bpath" d="M390,222 L418,220 L438,238 L435,260 L410,268 L382,258 L375,240 Z"/>
+            <text class="blabel" x="407" y="243">La Paternal</text>
+          </g>
+          <g class="bgroup" data-n="Villa del Parque">
+            <path class="bpath" d="M192,200 L220,210 L222,238 L215,265 L188,272 L162,260 L158,235 L168,212 Z"/>
+            <text class="blabel" x="190" y="237">V. del Parque</text>
+          </g>
+          <g class="bgroup" data-n="Villa Devoto">
+            <path class="bpath" d="M120,195 L155,180 L180,178 L192,200 L168,212 L158,235 L138,240 L112,228 L105,208 Z"/>
+            <text class="blabel" x="147" y="212">V. Devoto</text>
+          </g>
+          <g class="bgroup" data-n="Villa Gral. Mitre">
+            <path class="bpath" d="M342,218 L365,210 L375,240 L360,248 L342,248 L328,240 L328,228 Z"/>
+            <text class="blabel" x="350" y="234">V.G.Mitre</text>
+          </g>
+          <g class="bgroup" data-n="Villa Santa Rita">
+            <path class="bpath" d="M248,255 L280,248 L310,252 L312,278 L288,290 L258,285 L238,270 Z"/>
+            <text class="blabel" x="276" y="268">V. Sta. Rita</text>
+          </g>
+          <g class="bgroup" data-n="Monte Castro">
+            <path class="bpath" d="M112,228 L138,240 L140,265 L118,278 L92,268 L86,248 Z"/>
+            <text class="blabel" x="113" y="253">M. Castro</text>
+          </g>
+          <g class="bgroup" data-n="Villa Real">
+            <path class="bpath" d="M62,220 L92,210 L105,208 L112,228 L86,248 L62,245 L50,232 Z"/>
+            <text class="blabel" x="78" y="228">V. Real</text>
+          </g>
+          <g class="bgroup" data-n="Versalles">
+            <path class="bpath" d="M42,255 L62,245 L86,248 L86,270 L68,282 L42,278 L35,266 Z"/>
+            <text class="blabel" x="62" y="264">Versalles</text>
+          </g>
 
-        <g class="bgroup" data-n="Coghlan">
-          <path class="bpath" d="M385,145 L430,130 L460,90 L500,105 L490,130 L470,158 L440,165 L400,162 L375,155 Z"/>
-          <text class="blabel" x="432" y="138">Coghlan</text>
-        </g>
+          <!-- FRANJA MEDIA -->
+          <g class="bgroup" data-n="Almagro">
+            <path class="bpath" d="M508,278 L535,272 L558,285 L558,318 L532,332 L505,322 L488,305 L488,290 Z"/>
+            <text class="blabel" x="523" y="302">Almagro</text>
+          </g>
+          <g class="bgroup" data-n="Balvanera">
+            <path class="bpath" d="M558,285 L590,278 L618,290 L622,322 L598,335 L570,330 L558,318 Z"/>
+            <text class="blabel" x="592" y="308">Balvanera</text>
+          </g>
+          <g class="bgroup" data-n="San Nicolás">
+            <path class="bpath" d="M695,415 L725,430 L738,455 L730,478 L705,485 L682,472 L675,448 L680,425 Z"/>
+            <text class="blabel" x="707" y="450">San Nicolás</text>
+          </g>
+          <g class="bgroup" data-n="Montserrat">
+            <path class="bpath" d="M730,478 L762,472 L775,490 L768,515 L742,520 L718,508 L705,490 Z"/>
+            <text class="blabel" x="741" y="496">Montserrat</text>
+          </g>
+          <g class="bgroup" data-n="Puerto Madero">
+            <path class="bpath" d="M840,415 L875,420 L900,450 L905,500 L895,540 L875,555 L852,545 L840,510 L835,470 Z"/>
+            <text class="blabel" x="870" y="484">Pto. Madero</text>
+          </g>
+          <g class="bgroup" data-n="Caballito">
+            <path class="bpath" d="M382,258 L410,268 L420,295 L418,325 L390,335 L360,325 L348,302 L355,272 Z"/>
+            <text class="blabel" x="385" y="298">Caballito</text>
+          </g>
 
-        <g class="bgroup" data-n="Villa Urquiza">
-          <path class="bpath" d="M280,140 L330,148 L385,145 L375,155 L370,185 L350,200 L310,205 L272,195 L258,170 Z"/>
-          <text class="blabel" x="320" y="172">V. Urquiza</text>
-        </g>
+          <!-- FRANJA MEDIA SUR -->
+          <g class="bgroup" data-n="Boedo">
+            <path class="bpath" d="M488,305 L505,322 L508,352 L482,362 L458,350 L452,325 L462,305 Z"/>
+            <text class="blabel" x="480" y="332">Boedo</text>
+          </g>
+          <g class="bgroup" data-n="San Cristóbal">
+            <path class="bpath" d="M570,330 L598,335 L608,362 L598,385 L572,388 L548,375 L545,350 L555,335 Z"/>
+            <text class="blabel" x="576" y="358">San Cristóbal</text>
+          </g>
+          <g class="bgroup" data-n="San Telmo">
+            <path class="bpath" d="M742,520 L768,515 L780,540 L772,565 L748,572 L725,558 L720,535 Z"/>
+            <text class="blabel" x="750" y="543">San Telmo</text>
+          </g>
+          <g class="bgroup" data-n="Constitución">
+            <path class="bpath" d="M705,490 L718,508 L725,535 L710,555 L685,555 L668,538 L665,515 L678,498 Z"/>
+            <text class="blabel" x="695" y="522">Constitución</text>
+          </g>
+          <g class="bgroup" data-n="Flores">
+            <path class="bpath" d="M310,278 L348,275 L360,302 L355,338 L328,352 L295,345 L270,328 L268,300 Z"/>
+            <text class="blabel" x="313" y="312">Flores</text>
+          </g>
+          <g class="bgroup" data-n="Floresta">
+            <path class="bpath" d="M215,265 L248,258 L258,285 L252,312 L225,322 L198,310 L192,285 Z"/>
+            <text class="blabel" x="224" y="292">Floresta</text>
+          </g>
+          <g class="bgroup" data-n="Villa Luro">
+            <path class="bpath" d="M158,262 L188,272 L192,298 L180,318 L155,322 L132,308 L130,285 L142,268 Z"/>
+            <text class="blabel" x="160" y="293">V. Luro</text>
+          </g>
+          <g class="bgroup" data-n="Vélez Sarsfield">
+            <path class="bpath" d="M86,270 L118,278 L130,298 L122,322 L96,328 L68,315 L62,292 Z"/>
+            <text class="blabel" x="97" y="298">Vélez Sársfield</text>
+          </g>
+          <g class="bgroup" data-n="Liniers">
+            <path class="bpath" d="M35,282 L62,278 L68,302 L62,328 L38,335 L18,320 L18,298 Z"/>
+            <text class="blabel" x="42" y="308">Liniers</text>
+          </g>
 
-        <g class="bgroup" data-n="Villa Pueyrredón">
-          <path class="bpath" d="M200,155 L240,125 L280,140 L258,170 L248,200 L220,210 L192,200 L180,178 Z"/>
-          <text class="blabel" x="218" y="172">V. Pueyrredón</text>
-        </g>
+          <!-- SUR -->
+          <g class="bgroup" data-n="Parque Chacabuco">
+            <path class="bpath" d="M418,325 L452,325 L458,358 L440,372 L408,370 L388,355 L388,338 Z"/>
+            <text class="blabel" x="423" y="350">P. Chacabuco</text>
+          </g>
+          <g class="bgroup" data-n="Parque Patricios">
+            <path class="bpath" d="M505,352 L532,345 L548,360 L548,390 L525,405 L498,398 L485,378 L488,360 Z"/>
+            <text class="blabel" x="517" y="377">P. Patricios</text>
+          </g>
+          <g class="bgroup" data-n="Barracas">
+            <path class="bpath" d="M598,385 L640,378 L668,388 L672,420 L665,450 L640,462 L608,455 L585,435 L580,408 Z"/>
+            <text class="blabel" x="628" y="420">Barracas</text>
+          </g>
+          <g class="bgroup" data-n="La Boca">
+            <path class="bpath" d="M748,572 L772,565 L790,582 L792,612 L770,628 L745,620 L730,600 L732,578 Z"/>
+            <text class="blabel" x="762" y="598">La Boca</text>
+          </g>
+          <g class="bgroup" data-n="Nueva Pompeya">
+            <path class="bpath" d="M458,372 L495,370 L510,390 L510,418 L485,428 L458,418 L445,400 L448,382 Z"/>
+            <text class="blabel" x="479" y="399">N. Pompeya</text>
+          </g>
+          <g class="bgroup" data-n="Parque Avellaneda">
+            <path class="bpath" d="M225,338 L265,328 L272,355 L265,382 L235,390 L205,378 L200,352 Z"/>
+            <text class="blabel" x="236" y="360">P. Avellaneda</text>
+          </g>
+          <g class="bgroup" data-n="Mataderos">
+            <path class="bpath" d="M130,330 L162,325 L192,332 L195,360 L178,378 L148,378 L122,362 L118,342 Z"/>
+            <text class="blabel" x="158" y="353">Mataderos</text>
+          </g>
 
-        <!-- ══ SEGUNDA FILA ══ -->
-        <g class="bgroup" data-n="Palermo">
-          <path class="bpath" d="M525,185 L570,205 L620,215 L670,210 L720,230 L750,265 L755,310 L740,340 L700,345 L660,340 L620,325 L580,300 L555,270 L530,240 L510,210 Z"/>
-          <text class="blabel" x="638" y="268">Palermo</text>
-        </g>
+          <!-- EXTREMO SUR -->
+          <g class="bgroup" data-n="Villa Soldati">
+            <path class="bpath" d="M385,390 L418,382 L435,400 L440,432 L415,448 L385,445 L365,428 L365,408 Z"/>
+            <text class="blabel" x="403" y="418">V. Soldati</text>
+          </g>
+          <g class="bgroup" data-n="Villa Lugano">
+            <path class="bpath" d="M200,382 L235,375 L265,385 L272,415 L260,442 L225,452 L192,440 L182,415 Z"/>
+            <text class="blabel" x="227" y="412">V. Lugano</text>
+          </g>
+          <g class="bgroup" data-n="Villa Riachuelo">
+            <path class="bpath" d="M295,428 L328,418 L355,428 L358,460 L335,475 L302,472 L278,455 L278,438 Z"/>
+            <text class="blabel" x="317" y="448">V. Riachuelo</text>
+          </g>
 
-        <g class="bgroup" data-n="Recoleta">
-          <path class="bpath" d="M700,345 L740,340 L770,355 L790,385 L785,415 L760,430 L725,430 L695,415 L685,390 L688,365 Z"/>
-          <text class="blabel" x="737" y="390">Recoleta</text>
-        </g>
+        </svg>
+      </div>
+      <p class="map-hint">Pasá el cursor sobre cada barrio · Hacé click para reportar un problema</p>
+    </div><!-- /map-col -->
 
-        <g class="bgroup" data-n="Retiro">
-          <path class="bpath" d="M770,355 L810,340 L845,355 L855,390 L840,415 L810,425 L785,415 L790,385 Z"/>
-          <text class="blabel" x="812" y="385">Retiro</text>
-        </g>
+    <!-- SIDE COLUMN -->
+    <div id="side-col">
 
-        <g class="bgroup" data-n="Colegiales">
-          <path class="bpath" d="M470,158 L500,160 L525,185 L510,210 L490,225 L458,222 L438,205 L440,178 Z"/>
-          <text class="blabel" x="484" y="192">Colegiales</text>
-        </g>
+      <!-- Stats card -->
+      <div class="side-card" id="stats-card">
+        <h4>📊 Estado actual</h4>
+        <div class="srow"><span>Total reportes</span><span id="stt">0</span></div>
+        <div class="srow"><span>Activos</span><span id="sta">0</span></div>
+        <div class="srow"><span>Resueltos</span><span id="str">0</span></div>
+        <div class="srow"><span>Confirmados ⭐</span><span id="stc">0</span></div>
+      </div>
 
-        <g class="bgroup" data-n="Chacarita">
-          <path class="bpath" d="M400,162 L440,165 L438,205 L418,220 L390,222 L365,210 L362,185 Z"/>
-          <text class="blabel" x="402" y="193">Chacarita</text>
-        </g>
+      <!-- Heat legend -->
+      <div class="side-card">
+        <h4>🌡 Mapa de calor</h4>
+        <div class="lgrd"></div>
+        <div class="lgrd-lbl"><span>Pocos reportes</span><span>Muchos</span></div>
+      </div>
 
-        <g class="bgroup" data-n="Villa Ortúzar">
-          <path class="bpath" d="M350,200 L370,185 L400,162 L362,185 L355,205 L348,215 Z"/>
-          <text class="blabel" x="365" y="195">V. Ortúzar</text>
-        </g>
+      <!-- Donation card -->
+      <div class="side-card" id="don-card">
+        <h4>💛 Apoyá el proyecto</h4>
+        <p>Este proyecto es gratuito y sin fines de lucro. Si querés ayudarnos a mantenerlo vivo, podés colaborar.</p>
+        <a class="don-btn" id="don-link" href="#" target="_blank" rel="noopener">
+          💛 Hacer una donación
+        </a>
+        <p class="don-note">Todos los aportes se destinan al mantenimiento de la plataforma.</p>
+      </div>
 
-        <g class="bgroup" data-n="Parque Chas">
-          <path class="bpath" d="M355,205 L390,222 L385,242 L360,248 L340,235 L342,218 Z"/>
-          <text class="blabel" x="364" y="228">P. Chas</text>
-        </g>
+    </div><!-- /side-col -->
+  </div><!-- /map-outer -->
 
-        <g class="bgroup" data-n="Agronomía">
-          <path class="bpath" d="M220,210 L248,200 L258,225 L248,255 L222,262 L198,250 L192,228 Z"/>
-          <text class="blabel" x="224" y="232">Agronomía</text>
-        </g>
-
-        <!-- ══ FRANJA MEDIA NORTE ══ -->
-        <g class="bgroup" data-n="Villa Crespo">
-          <path class="bpath" d="M458,222 L490,225 L510,245 L508,278 L480,290 L452,282 L435,260 L438,238 Z"/>
-          <text class="blabel" x="473" y="257">V. Crespo</text>
-        </g>
-
-        <g class="bgroup" data-n="La Paternal">
-          <path class="bpath" d="M390,222 L418,220 L438,238 L435,260 L410,268 L382,258 L375,240 Z"/>
-          <text class="blabel" x="407" y="243">La Paternal</text>
-        </g>
-
-        <g class="bgroup" data-n="Villa del Parque">
-          <path class="bpath" d="M192,200 L220,210 L222,238 L215,265 L188,272 L162,260 L158,235 L168,212 Z"/>
-          <text class="blabel" x="190" y="237">V. del Parque</text>
-        </g>
-
-        <g class="bgroup" data-n="Villa Devoto">
-          <path class="bpath" d="M120,195 L155,180 L180,178 L192,200 L168,212 L158,235 L138,240 L112,228 L105,208 Z"/>
-          <text class="blabel" x="147" y="212">V. Devoto</text>
-        </g>
-
-        <g class="bgroup" data-n="Villa Gral. Mitre">
-          <path class="bpath" d="M342,218 L365,210 L375,240 L360,248 L342,248 L328,240 L328,228 Z"/>
-          <text class="blabel" x="350" y="234">V.G.Mitre</text>
-        </g>
-
-        <g class="bgroup" data-n="Villa Santa Rita">
-          <path class="bpath" d="M248,255 L280,248 L310,252 L312,278 L288,290 L258,285 L238,270 Z"/>
-          <text class="blabel" x="276" y="268">V. Sta. Rita</text>
-        </g>
-
-        <g class="bgroup" data-n="Monte Castro">
-          <path class="bpath" d="M112,228 L138,240 L140,265 L118,278 L92,268 L86,248 Z"/>
-          <text class="blabel" x="113" y="253">M. Castro</text>
-        </g>
-
-        <g class="bgroup" data-n="Villa Real">
-          <path class="bpath" d="M62,220 L92,210 L105,208 L112,228 L86,248 L62,245 L50,232 Z"/>
-          <text class="blabel" x="78" y="228">V. Real</text>
-        </g>
-
-        <g class="bgroup" data-n="Versalles">
-          <path class="bpath" d="M42,255 L62,245 L86,248 L86,270 L68,282 L42,278 L35,266 Z"/>
-          <text class="blabel" x="62" y="263">Versalles</text>
-        </g>
-
-        <!-- ══ FRANJA MEDIA ══ -->
-        <g class="bgroup" data-n="Almagro">
-          <path class="bpath" d="M508,278 L535,272 L558,285 L558,318 L532,332 L505,322 L488,305 L488,290 Z"/>
-          <text class="blabel" x="523" y="302">Almagro</text>
-        </g>
-
-        <g class="bgroup" data-n="Balvanera">
-          <path class="bpath" d="M558,285 L590,278 L618,290 L622,322 L598,335 L570,330 L558,318 Z"/>
-          <text class="blabel" x="590" y="308">Balvanera</text>
-        </g>
-
-        <g class="bgroup" data-n="San Nicolás">
-          <path class="bpath" d="M695,415 L725,430 L738,455 L730,478 L705,485 L682,472 L675,448 L680,425 Z"/>
-          <text class="blabel" x="707" y="450">San Nicolás</text>
-        </g>
-
-        <g class="bgroup" data-n="Montserrat">
-          <path class="bpath" d="M730,478 L762,472 L775,490 L768,515 L742,520 L718,508 L705,490 Z"/>
-          <text class="blabel" x="741" y="495">Montserrat</text>
-        </g>
-
-        <g class="bgroup" data-n="Puerto Madero">
-          <path class="bpath" d="M840,415 L875,420 L900,450 L905,500 L895,540 L875,555 L852,545 L840,510 L835,470 Z"/>
-          <text class="blabel" x="870" y="483">Pto. Madero</text>
-        </g>
-
-        <g class="bgroup" data-n="Caballito">
-          <path class="bpath" d="M382,258 L410,268 L420,295 L418,325 L390,335 L360,325 L348,302 L355,272 Z"/>
-          <text class="blabel" x="385" y="298">Caballito</text>
-        </g>
-
-        <!-- ══ FRANJA MEDIA SUR ══ -->
-        <g class="bgroup" data-n="Boedo">
-          <path class="bpath" d="M488,305 L505,322 L508,352 L482,362 L458,350 L452,325 L462,305 Z"/>
-          <text class="blabel" x="480" y="332">Boedo</text>
-        </g>
-
-        <g class="bgroup" data-n="San Cristóbal">
-          <path class="bpath" d="M570,330 L598,335 L608,362 L598,385 L572,388 L548,375 L545,350 L555,335 Z"/>
-          <text class="blabel" x="576" y="358">San Cristóbal</text>
-        </g>
-
-        <g class="bgroup" data-n="San Telmo">
-          <path class="bpath" d="M742,520 L768,515 L780,540 L772,565 L748,572 L725,558 L720,535 Z"/>
-          <text class="blabel" x="750" y="543">San Telmo</text>
-        </g>
-
-        <g class="bgroup" data-n="Constitución">
-          <path class="bpath" d="M705,490 L718,508 L725,535 L710,555 L685,555 L668,538 L665,515 L678,498 Z"/>
-          <text class="blabel" x="695" y="522">Constitución</text>
-        </g>
-
-        <g class="bgroup" data-n="Flores">
-          <path class="bpath" d="M310,278 L348,275 L360,302 L355,338 L328,352 L295,345 L270,328 L268,300 Z"/>
-          <text class="blabel" x="313" y="312">Flores</text>
-        </g>
-
-        <g class="bgroup" data-n="Floresta">
-          <path class="bpath" d="M215,265 L248,258 L258,285 L252,312 L225,322 L198,310 L192,285 Z"/>
-          <text class="blabel" x="224" y="292">Floresta</text>
-        </g>
-
-        <g class="bgroup" data-n="Villa Luro">
-          <path class="bpath" d="M158,262 L188,272 L192,298 L180,318 L155,322 L132,308 L130,285 L142,268 Z"/>
-          <text class="blabel" x="160" y="293">V. Luro</text>
-        </g>
-
-        <g class="bgroup" data-n="Vélez Sarsfield">
-          <path class="bpath" d="M86,270 L118,278 L130,298 L122,322 L96,328 L68,315 L62,292 Z"/>
-          <text class="blabel" x="97" y="298">Vélez Sársfield</text>
-        </g>
-
-        <g class="bgroup" data-n="Liniers">
-          <path class="bpath" d="M35,282 L62,278 L68,302 L62,328 L38,335 L18,320 L18,298 Z"/>
-          <text class="blabel" x="42" y="307">Liniers</text>
-        </g>
-
-        <!-- ══ SUR ══ -->
-        <g class="bgroup" data-n="Parque Chacabuco">
-          <path class="bpath" d="M418,325 L452,325 L458,358 L440,372 L408,370 L388,355 L388,338 Z"/>
-          <text class="blabel" x="423" y="349">P. Chacabuco</text>
-        </g>
-
-        <g class="bgroup" data-n="Parque Patricios">
-          <path class="bpath" d="M505,352 L532,345 L548,360 L548,390 L525,405 L498,398 L485,378 L488,360 Z"/>
-          <text class="blabel" x="517" y="377">P. Patricios</text>
-        </g>
-
-        <g class="bgroup" data-n="Barracas">
-          <path class="bpath" d="M598,385 L640,378 L668,388 L672,420 L665,450 L640,462 L608,455 L585,435 L580,408 Z"/>
-          <text class="blabel" x="628" y="420">Barracas</text>
-        </g>
-
-        <g class="bgroup" data-n="La Boca">
-          <path class="bpath" d="M748,572 L772,565 L790,582 L792,612 L770,628 L745,620 L730,600 L732,578 Z"/>
-          <text class="blabel" x="762" y="598">La Boca</text>
-        </g>
-
-        <g class="bgroup" data-n="Nueva Pompeya">
-          <path class="bpath" d="M458,372 L495,370 L510,390 L510,418 L485,428 L458,418 L445,400 L448,382 Z"/>
-          <text class="blabel" x="479" y="399">N. Pompeya</text>
-        </g>
-
-        <g class="bgroup" data-n="Parque Avellaneda">
-          <path class="bpath" d="M225,338 L265,328 L272,355 L265,382 L235,390 L205,378 L200,352 Z"/>
-          <text class="blabel" x="236" y="360">P. Avellaneda</text>
-        </g>
-
-        <g class="bgroup" data-n="Mataderos">
-          <path class="bpath" d="M130,330 L162,325 L192,332 L195,360 L178,378 L148,378 L122,362 L118,342 Z"/>
-          <text class="blabel" x="158" y="353">Mataderos</text>
-        </g>
-
-        <!-- ══ EXTREMO SUR ══ -->
-        <g class="bgroup" data-n="Villa Soldati">
-          <path class="bpath" d="M385,390 L418,382 L435,400 L440,432 L415,448 L385,445 L365,428 L365,408 Z"/>
-          <text class="blabel" x="403" y="418">V. Soldati</text>
-        </g>
-
-        <g class="bgroup" data-n="Villa Lugano">
-          <path class="bpath" d="M200,382 L235,375 L265,385 L272,415 L260,442 L225,452 L192,440 L182,415 Z"/>
-          <text class="blabel" x="227" y="412">V. Lugano</text>
-        </g>
-
-        <g class="bgroup" data-n="Villa Riachuelo">
-          <path class="bpath" d="M295,428 L328,418 L355,428 L358,460 L335,475 L302,472 L278,455 L278,438 Z"/>
-          <text class="blabel" x="317" y="448">V. Riachuelo</text>
-        </g>
-
-      </svg>
-    </div>
-    <p class="map-hint">Pasá el cursor por cada barrio · Hacé click para reportar un problema</p>
+  <!-- Stats mobile (shown below map on small screens) -->
+  <div id="statsbar-mobile">
+    <div class="st"><span class="st-n" id="stt-m">0</span><span class="st-l">Reportes</span></div>
+    <div class="st"><span class="st-n" id="sta-m">0</span><span class="st-l">Activos</span></div>
+    <div class="st"><span class="st-n" id="str-m">0</span><span class="st-l">Resueltos</span></div>
+    <div class="st"><span class="st-n" id="stc-m">0</span><span class="st-l">Confirmados</span></div>
   </div>
 
-  <!-- STATS -->
-  <div id="statsbar">
-    <div class="st"><span class="st-n" id="stt">0</span><span class="st-l">Reportes</span></div>
-    <div class="st"><span class="st-n" id="sta">0</span><span class="st-l">Activos</span></div>
-    <div class="st"><span class="st-n" id="str">0</span><span class="st-l">Resueltos</span></div>
-    <div class="st"><span class="st-n" id="stc">0</span><span class="st-l">Confirmados</span></div>
-  </div>
 </section>
 
-<!-- NOSOTROS -->
+<!-- ══ NOSOTROS ══ -->
 <section id="nosotros">
   <div class="sec-inner">
     <div class="sec-tag">Nuestra misión</div>
@@ -761,13 +736,19 @@ footer a{color:inherit;text-decoration:none}
     <p>Solo nosotros sabemos el esfuerzo que es comprar, cuidar y mantener nuestros medios de transporte. Si mejoramos las calles por las cuales transitamos todos los días, agregaremos un cuidado extra a nuestros vehículos y medios de transporte.</p>
     <div class="nos-quote">"Una voz sola es difícil de escuchar. Pero mientras más voces seamos, no habrá oídos que no puedan escucharnos."</div>
     <p>Solo necesitás registrarte y poner la dirección donde está el problema. Seleccioná cuál es, y listo. <strong style="color:var(--blanco)">Mientras más personas registren el mismo problema, mayor es el nivel de confiabilidad.</strong> Si tu amigo, familiar o vecino quiere reportar el mismo lugar, eso mejora la precisión de la información.</p>
-    <div style="margin-top:26px">
-      <button class="btn btn-cel" style="font-size:.88rem;padding:10px 24px" id="nos-rep-btn">Hacer mi primer reporte →</button>
+
+    <div class="privacy-note">
+      <strong>🔒 Tu privacidad, garantizada.</strong><br>
+      Tu nombre y email <strong>nunca son visibles</strong> para otros usuarios ni en el mapa. Los datos de ubicación y tipo de problema, sin información personal, podrán ser compartidos con organismos públicos para mejorar la infraestructura vial de CABA, siempre en forma anónima y agregada.
+    </div>
+
+    <div style="margin-top:24px">
+      <button class="btn btn-cel" style="font-size:.87rem;padding:10px 22px" id="nos-rep-btn">Hacer mi primer reporte →</button>
     </div>
   </div>
 </section>
 
-<!-- COMO -->
+<!-- ══ COMO ══ -->
 <section id="como">
   <div style="max-width:820px;margin:0 auto">
     <h2>¿Cómo <em>funciona</em>?</h2>
@@ -781,38 +762,38 @@ footer a{color:inherit;text-decoration:none}
       </div>
       <div class="step">
         <div class="step-n">02</div>
-        <h3>Marcá el barrio</h3>
-        <p>Hacé click en tu barrio. Escribí la calle y la altura, y elegí el tipo de problema.</p>
+        <h3>Elegí tu barrio</h3>
+        <p>Hacé click en tu barrio en el mapa. Ingresá la calle y altura, y seleccioná el tipo de problema.</p>
       </div>
       <div class="step">
         <div class="step-n">03</div>
         <h3>Enviá el informe</h3>
-        <p>Con 3 reportes en la misma dirección se confirma. Eso genera presión para que lo arreglen.</p>
+        <p>Con 3 reportes en la misma dirección el problema queda confirmado, generando presión oficial para resolverlo.</p>
       </div>
     </div>
     <div class="arg-div">— ARGENTINA —</div>
     <div style="text-align:center">
-      <button class="btn btn-cel" style="font-size:.9rem;padding:11px 28px" id="como-rep-btn">Reportar ahora →</button>
+      <button class="btn btn-cel" style="font-size:.9rem;padding:11px 26px" id="como-rep-btn">Reportar ahora →</button>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
+<!-- ══ FOOTER ══ -->
 <footer>
   <p>🇦🇷 <strong>Calles CABA ★★★</strong> — Iniciativa vecinal colaborativa</p>
   <span class="beta">BETA</span>
-  <p>Todos los datos son anónimos y protegidos</p>
+  <p>Todos los datos son anónimos y protegidos · <a href="#nosotros">Privacidad</a></p>
 </footer>
 
-<!-- TOOLTIP -->
+<!-- ══ TOOLTIP ══ -->
 <div id="btip"></div>
 
-<!-- LOGIN OVERLAY -->
+<!-- ══ LOGIN MODAL ══ -->
 <div class="overlay" id="lmodal">
   <div id="lbox">
     <div class="flag-row">
       <div class="fb c"></div><div class="fb w"></div>
-      <svg width="20" height="20" viewBox="0 0 100 100"><circle cx="50" cy="50" r="16" fill="#f4d03f"/><rect x="47" y="6" width="6" height="18" rx="3" fill="#f4d03f"/><rect x="47" y="76" width="6" height="18" rx="3" fill="#f4d03f"/><rect x="6" y="47" width="18" height="6" rx="3" fill="#f4d03f"/><rect x="76" y="47" width="18" height="6" rx="3" fill="#f4d03f"/><rect x="16" y="14" width="6" height="18" rx="3" fill="#f4d03f" transform="rotate(45 19 23)"/><rect x="60" y="14" width="6" height="18" rx="3" fill="#f4d03f" transform="rotate(-45 63 23)"/><rect x="16" y="62" width="6" height="18" rx="3" fill="#f4d03f" transform="rotate(-45 19 71)"/><rect x="60" y="62" width="6" height="18" rx="3" fill="#f4d03f" transform="rotate(45 63 71)"/></svg>
+      <svg width="19" height="19" viewBox="0 0 100 100"><circle cx="50" cy="50" r="16" fill="#f4d03f"/><rect x="47" y="6" width="6" height="18" rx="3" fill="#f4d03f"/><rect x="47" y="76" width="6" height="18" rx="3" fill="#f4d03f"/><rect x="6" y="47" width="18" height="6" rx="3" fill="#f4d03f"/><rect x="76" y="47" width="18" height="6" rx="3" fill="#f4d03f"/><rect x="16" y="14" width="6" height="18" rx="3" fill="#f4d03f" transform="rotate(45 19 23)"/><rect x="60" y="14" width="6" height="18" rx="3" fill="#f4d03f" transform="rotate(-45 63 23)"/><rect x="16" y="62" width="6" height="18" rx="3" fill="#f4d03f" transform="rotate(-45 19 71)"/><rect x="60" y="62" width="6" height="18" rx="3" fill="#f4d03f" transform="rotate(45 63 71)"/></svg>
       <div class="fb w"></div><div class="fb c"></div>
     </div>
     <h2>Identificate, vecino</h2>
@@ -825,98 +806,129 @@ footer a{color:inherit;text-decoration:none}
   </div>
 </div>
 
-<!-- REPORT OVERLAY -->
+<!-- ══ REPORT MODAL ══ -->
 <div class="overlay" id="rmodal">
   <div id="rbox">
     <button class="mx" id="rmx">✕</button>
+
+    <!-- Progress -->
     <div class="prog">
       <div class="prs done">✓</div><div class="prl"></div>
-      <div class="prs act">2</div><div class="prl"></div>
-      <div class="prs idle">3</div>
+      <div class="prs done">✓</div><div class="prl"></div>
+      <div class="prs act">3</div>
     </div>
+
     <p class="mh">Reportar un problema</p>
-    <p class="ms">Completá los datos del problema en tu barrio</p>
-    <div class="bsel">📍 Barrio: <span id="bsel-name">—</span></div>
+    <p class="ms">Completá los datos del problema en tu barrio. Todo es anónimo.</p>
+
+    <!-- Barrio badge -->
+    <div class="bsel">📍 Barrio seleccionado: <span id="bsel-name">—</span></div>
+
+    <!-- CALLE + ALTURA -->
     <div class="fg">
-      <label>Dirección del problema *</label>
+      <label>📌 Dirección del problema *</label>
       <div class="addr-row">
-        <input type="text" id="f-calle" placeholder="Nombre de la calle"/>
-        <input type="text" id="f-altura" placeholder="Altura"/>
+        <input type="text" id="f-calle" placeholder="Nombre de la calle  (ej: Corrientes)"/>
+        <input type="text" id="f-altura" placeholder="Altura (ej: 2400)"/>
       </div>
     </div>
+
+    <!-- TIPO DE PROBLEMA -->
     <div class="fg">
-      <label>Tipo de problema *</label>
+      <label>⚠️ Tipo de problema *</label>
       <div class="prob-grid">
-        <label class="popt"><input type="radio" name="tipo" value="pozo"/><span class="ic">🕳️</span><span>Pozo / bache</span></label>
-        <label class="popt"><input type="radio" name="tipo" value="deformacion"/><span class="ic">🌊</span><span>Deformación del asfalto</span></label>
-        <label class="popt"><input type="radio" name="tipo" value="loma"/><span class="ic">🏔️</span><span>Loma de burro mal construida</span></label>
-        <label class="popt"><input type="radio" name="tipo" value="zanja"/><span class="ic">🚧</span><span>Zanja o badén muy profundo</span></label>
-        <label class="popt full"><input type="radio" name="tipo" value="tapa"/><span class="ic">⚠️</span><span>Tapa de alcantarilla deforme</span></label>
+        <label class="popt">
+          <input type="radio" name="tipo" value="pozo"/>
+          <span class="ic">🕳️</span><span>Pozo / bache</span>
+        </label>
+        <label class="popt">
+          <input type="radio" name="tipo" value="deformacion"/>
+          <span class="ic">🌊</span><span>Deformación del asfalto</span>
+        </label>
+        <label class="popt">
+          <input type="radio" name="tipo" value="loma"/>
+          <span class="ic">🏔️</span><span>Loma de burro mal construida</span>
+        </label>
+        <label class="popt">
+          <input type="radio" name="tipo" value="zanja"/>
+          <span class="ic">🚧</span><span>Zanja o badén muy profundo</span>
+        </label>
+        <label class="popt full">
+          <input type="radio" name="tipo" value="tapa"/>
+          <span class="ic">⚠️</span><span>Tapa de alcantarilla deforme o hueca</span>
+        </label>
       </div>
     </div>
+
+    <!-- Confirmation notice -->
     <div class="conf-badge" id="conf-badge">
-      <span>⭐</span><span>¡Esta zona ya tiene reportes! Tu reporte puede confirmar el problema oficialmente.</span>
+      ⭐ <span>¡Esta zona ya tiene reportes similares! Tu reporte puede confirmar el problema oficialmente.</span>
     </div>
+
+    <!-- DESCRIPCIÓN -->
     <div class="fg">
-      <label>Descripción <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0">(opcional)</span></label>
-      <textarea id="f-desc" rows="2" placeholder="Algún detalle útil…"></textarea>
+      <label>📝 Descripción <span style="color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0">(opcional)</span></label>
+      <textarea id="f-desc" rows="2" placeholder="Cualquier detalle útil: si hay señalización, si es peligroso de noche, etc."></textarea>
     </div>
+
+    <!-- CONSENTIMIENTO DATOS -->
+    <label class="consent-row">
+      <input type="checkbox" id="f-consent"/>
+      <span>Acepto que los datos de ubicación y tipo de problema (sin datos personales) puedan ser compartidos con organismos públicos para mejorar la infraestructura vial de CABA. <a href="#nosotros" onclick="closeModal('rmodal')">Ver política</a></span>
+    </label>
+
     <button class="btn btn-cel" id="sbtn">Enviar informe 🇦🇷</button>
   </div>
 </div>
 
-<!-- NOSOTROS MODAL -->
+<!-- ══ NOSOTROS MODAL ══ -->
 <div class="overlay" id="nosmodal">
   <div id="nosbox">
     <button class="mx" id="nosmx">✕</button>
-    <div class="flag-row" style="margin-bottom:14px">
+    <div class="flag-row" style="margin-bottom:13px">
       <div class="fb c"></div><div class="fb w"></div>
-      <svg width="18" height="18" viewBox="0 0 100 100"><circle cx="50" cy="50" r="16" fill="#f4d03f"/><rect x="47" y="6" width="6" height="18" rx="3" fill="#f4d03f"/><rect x="47" y="76" width="6" height="18" rx="3" fill="#f4d03f"/><rect x="6" y="47" width="18" height="6" rx="3" fill="#f4d03f"/><rect x="76" y="47" width="18" height="6" rx="3" fill="#f4d03f"/></svg>
+      <svg width="17" height="17" viewBox="0 0 100 100"><circle cx="50" cy="50" r="16" fill="#f4d03f"/><rect x="47" y="6" width="6" height="18" rx="3" fill="#f4d03f"/><rect x="47" y="76" width="6" height="18" rx="3" fill="#f4d03f"/><rect x="6" y="47" width="18" height="6" rx="3" fill="#f4d03f"/><rect x="76" y="47" width="18" height="6" rx="3" fill="#f4d03f"/></svg>
       <div class="fb w"></div><div class="fb c"></div>
     </div>
     <h2><em>Calles CABA</em> ★★★</h2>
     <div class="nq">"Una voz sola es difícil de escuchar. Pero mientras más voces seamos, no habrá oídos que no puedan escucharnos."</div>
     <p>Esta es una iniciativa para cualquier persona que use cualquier medio de transporte: desde rollers y bicicleta, hasta los medios privados o públicos.</p>
     <div class="ntag"><span>🛼 Rollers</span><span>🚲 Bicicleta</span><span>🛵 Moto</span><span>🚗 Auto</span><span>🚌 Colectivo</span><span>🚶 A pie</span></div>
-    <p>Solo nosotros sabemos el esfuerzo que es comprar, cuidar y mantener nuestros medios de transporte. Si mejoramos las calles por las cuales transitamos todos los días, agregaremos un cuidado extra a nuestros vehículos y medios de transporte.</p>
-    <p><strong style="color:var(--blanco)">Solo necesitás registrarte y poner la dirección donde está el problema,</strong> seleccioná cuál es, y listo. Mientras más personas registren el mismo problema, mayor es el nivel de confiabilidad. Si tu amigo, familiar o vecino quiere reportar el mismo lugar, es mejor para la precisión de la información.</p>
+    <p>Solo nosotros sabemos el esfuerzo que es comprar, cuidar y mantener nuestros medios de transporte. Si mejoramos las calles por las cuales transitamos todos los días, agregaremos un cuidado extra a nuestros vehículos.</p>
+    <p><strong style="color:var(--blanco)">Solo necesitás registrarte y poner la dirección donde está el problema,</strong> seleccioná cuál es, y listo. Mientras más personas registren el mismo problema, mayor es el nivel de confiabilidad.</p>
     <div class="nbtns">
-      <button class="btn btn-cel" style="font-size:.84rem" id="nos-modal-rep">Hacer mi primer reporte →</button>
-      <button class="btn btn-ghost" style="font-size:.84rem" id="nos-modal-close">Cerrar</button>
+      <button class="btn btn-cel" style="font-size:.83rem" id="nos-modal-rep">Hacer mi primer reporte →</button>
+      <button class="btn btn-ghost" style="font-size:.83rem" id="nos-modal-close">Cerrar</button>
     </div>
   </div>
 </div>
 
-<!-- TOAST -->
+<!-- ══ TOAST ══ -->
 <div id="toast"></div>
 
 <script>
-// ══════════════════════════════════════
-// SUPABASE CONFIG
-// ══════════════════════════════════════
+// ══════════════════════════════════════════════════════
+// CONFIG — pegá tu anon key de Supabase → Settings → API
+// ══════════════════════════════════════════════════════
 const SURL = 'https://wdnxnnmnctoqbcbbwaxw.supabase.co';
-const SKEY = 'TU_ANON_PUBLIC_KEY'; // ⚠️ Reemplazá con tu anon key de Supabase → Settings → API
+const SKEY = 'TU_ANON_PUBLIC_KEY';
+// Donación — reemplazá con tu link de Mercado Pago cuando lo tengas
+const DONATION_URL = 'https://mpago.la/1fomn2M';
+
 const sb = supabase.createClient(SURL, SKEY);
+document.getElementById('don-link').href = DONATION_URL;
 
-// ══════════════════════════════════════
-// STATE
-// ══════════════════════════════════════
-let currentUser = null;
-let reports = [];
-let selectedBarrio = null;
-let toastT;
+// ── STATE ──────────────────────────────────────────────
+let currentUser = null, reports = [], selectedBarrio = null, toastT;
 
-// ══════════════════════════════════════
-// BARRIO INTERACTIONS
-// ══════════════════════════════════════
+// ── BARRIO INTERACTIONS ────────────────────────────────
 const tip = document.getElementById('btip');
 
 document.querySelectorAll('.bgroup').forEach(g => {
   const name = g.getAttribute('data-n');
-  if(!name) return;
-  const path = g.querySelector('.bpath');
+  if (!name) return;
 
-  g.addEventListener('mouseenter', e => {
+  g.addEventListener('mouseenter', () => {
     tip.textContent = name;
     tip.style.display = 'block';
   });
@@ -930,20 +942,27 @@ document.querySelectorAll('.bgroup').forEach(g => {
   g.addEventListener('click', () => {
     selectedBarrio = name;
     document.getElementById('bsel-name').textContent = name;
-    startRepFlow();
+    setPickMode(false);
+    console.log('[Map] Barrio seleccionado:', name);
+
+    if (!currentUser) {
+      sessionStorage.setItem('pendingBarrio', name);
+      openModal('lmodal');
+    } else {
+      checkNearby();
+      openModal('rmodal');
+    }
   });
 });
 
-// ══════════════════════════════════════
-// LOAD & HEAT MAP
-// ══════════════════════════════════════
+// ── LOAD REPORTS ───────────────────────────────────────
 async function loadReports() {
   try {
     const { data, error } = await sb.from('reportes').select('barrio,estado,confirmed');
     if (error) throw error;
     reports = data || [];
   } catch(e) {
-    console.warn('Error cargando reportes:', e.message);
+    console.warn('[DB] Error cargando reportes:', e.message);
     reports = [];
   }
   updateStats();
@@ -954,10 +973,17 @@ function updateStats() {
   const active    = reports.filter(r => r.estado !== 'resuelto').length;
   const resolved  = reports.filter(r => r.estado === 'resuelto').length;
   const confirmed = reports.filter(r => r.confirmed).length;
-  document.getElementById('stt').textContent = reports.length;
+  const total     = reports.length;
+  // Desktop side card
+  document.getElementById('stt').textContent = total;
   document.getElementById('sta').textContent = active;
   document.getElementById('str').textContent = resolved;
   document.getElementById('stc').textContent = confirmed;
+  // Mobile bar
+  document.getElementById('stt-m').textContent = total;
+  document.getElementById('sta-m').textContent = active;
+  document.getElementById('str-m').textContent = resolved;
+  document.getElementById('stc-m').textContent = confirmed;
 }
 
 function updateHeat() {
@@ -972,54 +998,56 @@ function updateHeat() {
     const c = counts[name] || 0;
     const ratio = c / maxC;
     p.classList.remove('hot1','hot2','hot3');
-    if (ratio > .65) p.classList.add('hot3');
+    if      (ratio > .65) p.classList.add('hot3');
     else if (ratio > .35) p.classList.add('hot2');
     else if (ratio > .08) p.classList.add('hot1');
   });
 }
 
-// ══════════════════════════════════════
-// AUTH
-// ══════════════════════════════════════
+// ── AUTH ───────────────────────────────────────────────
 async function checkSession() {
   try {
-    console.log('[Auth] Verificando sesión existente...');
+    console.log('[Auth] Verificando sesión...');
     const { data: { session }, error: sessErr } = await sb.auth.getSession();
-    if (sessErr) console.error('[Auth] Error en getSession:', sessErr);
+    if (sessErr) console.error('[Auth] getSession error:', sessErr);
 
     if (session?.user) {
-      console.log('[Auth] Sesión activa encontrada:', session.user.email);
+      console.log('[Auth] Sesión activa:', session.user.email);
       setUser(session.user);
-      // Si volvimos de un redirect de Google y había un barrio pendiente, abrimos el form
-      const pendingBarrio = sessionStorage.getItem('pendingBarrio');
-      if (pendingBarrio) {
+      const pending = sessionStorage.getItem('pendingBarrio');
+      if (pending) {
         sessionStorage.removeItem('pendingBarrio');
-        selectedBarrio = pendingBarrio;
-        document.getElementById('bsel-name').textContent = pendingBarrio;
+        selectedBarrio = pending;
+        document.getElementById('bsel-name').textContent = pending;
+        checkNearby();
         setTimeout(() => openModal('rmodal'), 500);
       }
     } else {
-      console.log('[Auth] No hay sesión activa.');
+      console.log('[Auth] Sin sesión activa.');
     }
 
-    // Escuchar cambios de sesión en tiempo real (post-redirect)
     sb.auth.onAuthStateChange((event, s) => {
       console.log('[Auth] onAuthStateChange →', event, s?.user?.email || 'sin usuario');
       setUser(s?.user || null);
       if (event === 'SIGNED_IN') {
         closeModal('lmodal');
-        toast('✅ ¡Bienvenido, ' + (s.user.user_metadata?.full_name || s.user.email) + '!', 'ok');
-        const pendingBarrio = sessionStorage.getItem('pendingBarrio');
-        if (pendingBarrio) {
+        const name = s.user.user_metadata?.full_name || s.user.email || 'vecino';
+        toast('✅ ¡Bienvenido, ' + name.split(' ')[0] + '!', 'ok');
+        const pending = sessionStorage.getItem('pendingBarrio');
+        if (pending) {
           sessionStorage.removeItem('pendingBarrio');
-          selectedBarrio = pendingBarrio;
-          document.getElementById('bsel-name').textContent = pendingBarrio;
-          setTimeout(() => openModal('rmodal'), 500);
+          selectedBarrio = pending;
+          document.getElementById('bsel-name').textContent = pending;
+          checkNearby();
+          setTimeout(() => openModal('rmodal'), 600);
+        } else {
+          setTimeout(() => {
+            setPickMode(true);
+            document.getElementById('hero').scrollIntoView({ behavior: 'smooth' });
+          }, 600);
         }
       }
-      if (event === 'SIGNED_OUT') {
-        toast('Sesión cerrada', '');
-      }
+      if (event === 'SIGNED_OUT') toast('Sesión cerrada', '');
     });
   } catch(e) {
     console.error('[Auth] Excepción en checkSession:', e);
@@ -1030,10 +1058,10 @@ async function doLogin() {
   try {
     if (selectedBarrio) sessionStorage.setItem('pendingBarrio', selectedBarrio);
     const redirectTo = window.location.origin + window.location.pathname;
-    console.log('[Auth] Iniciando login Google. redirectTo:', redirectTo);
+    console.log('[Auth] Iniciando OAuth. redirectTo:', redirectTo);
     const { error } = await sb.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: redirectTo }
+      options: { redirectTo }
     });
     if (error) {
       console.error('[Auth] signInWithOAuth error:', error);
@@ -1059,12 +1087,20 @@ function setUser(u) {
   }
 }
 
-// ══════════════════════════════════════
-// REPORT FLOW
-// ══════════════════════════════════════
+function setPickMode(on) {
+  document.getElementById('map-wrap').classList.toggle('pick-barrio', on);
+}
+
+// ── REPORT FLOW ────────────────────────────────────────
 function startRepFlow() {
   if (!currentUser) {
     openModal('lmodal');
+    return;
+  }
+  if (!selectedBarrio) {
+    setPickMode(true);
+    document.getElementById('hero').scrollIntoView({ behavior: 'smooth' });
+    toast('📍 Hacé click en tu barrio en el mapa', '');
     return;
   }
   checkNearby();
@@ -1078,14 +1114,13 @@ function checkNearby() {
   badge.style.display = nearby >= 2 ? 'flex' : 'none';
 }
 
-// ══════════════════════════════════════
-// SUBMIT
-// ══════════════════════════════════════
+// ── SUBMIT ─────────────────────────────────────────────
 document.getElementById('sbtn').addEventListener('click', async () => {
-  const calle  = document.getElementById('f-calle').value.trim();
-  const altura = document.getElementById('f-altura').value.trim();
-  const tipo   = document.querySelector('input[name="tipo"]:checked')?.value;
-  const desc   = document.getElementById('f-desc').value.trim();
+  const calle   = document.getElementById('f-calle').value.trim();
+  const altura  = document.getElementById('f-altura').value.trim();
+  const tipo    = document.querySelector('input[name="tipo"]:checked')?.value;
+  const desc    = document.getElementById('f-desc').value.trim();
+  const consent = document.getElementById('f-consent').checked;
 
   if (!selectedBarrio) { toast('⚠️ Primero hacé click en tu barrio en el mapa.', 'err'); return; }
   if (!calle)           { toast('⚠️ Ingresá el nombre de la calle.', 'err'); return; }
@@ -1094,30 +1129,38 @@ document.getElementById('sbtn').addEventListener('click', async () => {
   const btn = document.getElementById('sbtn');
   btn.textContent = 'Enviando…'; btn.disabled = true;
 
-  const nearbyCount = reports.filter(r => r.barrio === selectedBarrio && r.tipo === tipo && r.estado !== 'resuelto').length;
+  const nearbyCount = reports.filter(r =>
+    r.barrio === selectedBarrio && r.tipo === tipo && r.estado !== 'resuelto'
+  ).length;
   const isConf = nearbyCount >= 2;
 
   const row = {
-    user_id:     currentUser?.id || 'demo',
-    user_email:  currentUser?.email || 'demo@demo.com',
+    user_id:     currentUser.id,
+    user_email:  currentUser.email,
     barrio:      selectedBarrio,
-    calle, altura: altura || 's/n',
-    tipo, descripcion: desc,
-    estado: 'activo',
-    confirmed: isConf,
-    created_at: new Date().toISOString()
+    calle,
+    altura:      altura || 's/n',
+    tipo,
+    descripcion: desc,
+    estado:      'activo',
+    confirmed:   isConf,
+    consent_data_sharing: consent,
+    created_at:  new Date().toISOString()
   };
 
   try {
     const { error } = await sb.from('reportes').insert([row]);
     if (error) throw error;
-    toast(isConf ? '🌟 ¡CONFIRMADO! Ya hay 3+ reportes en esa zona.' : '✅ ¡Informe enviado! Gracias vecino 🇦🇷', 'ok');
+    const msg = isConf
+      ? '🌟 ¡CONFIRMADO! Ya hay 3+ reportes similares en esa zona.'
+      : '✅ ¡Informe enviado! Gracias, vecino 🇦🇷';
+    toast(msg, 'ok');
     closeModal('rmodal');
     resetForm();
     await loadReports();
   } catch(e) {
-    console.error(e);
-    toast('❌ Error al enviar el reporte. Verificá tu conexión.', 'err');
+    console.error('[DB] Error al insertar reporte:', e);
+    toast('❌ Error al enviar. Abrí F12 para detalles.', 'err');
   } finally {
     btn.textContent = 'Enviar informe 🇦🇷'; btn.disabled = false;
   }
@@ -1127,14 +1170,13 @@ function resetForm() {
   document.getElementById('f-calle').value = '';
   document.getElementById('f-altura').value = '';
   document.getElementById('f-desc').value = '';
+  document.getElementById('f-consent').checked = false;
   document.querySelectorAll('input[name="tipo"]').forEach(r => r.checked = false);
   document.querySelectorAll('.popt').forEach(o => o.classList.remove('sel'));
   document.getElementById('conf-badge').style.display = 'none';
 }
 
-// ══════════════════════════════════════
-// PROB CARD SELECT
-// ══════════════════════════════════════
+// ── PROB CARD SELECT ───────────────────────────────────
 document.querySelectorAll('.popt').forEach(o => {
   o.addEventListener('click', () => {
     document.querySelectorAll('.popt').forEach(p => p.classList.remove('sel'));
@@ -1143,63 +1185,69 @@ document.querySelectorAll('.popt').forEach(o => {
   });
 });
 
-// ══════════════════════════════════════
-// MODALS
-// ══════════════════════════════════════
+// ── MODALS ─────────────────────────────────────────────
 function openModal(id)  { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 
 ['lmodal','rmodal','nosmodal'].forEach(id => {
   document.getElementById(id).addEventListener('click', e => {
-    if (e.target === document.getElementById(id)) closeModal(id);
+    if (e.target === document.getElementById(id)) {
+      closeModal(id);
+      if (id === 'rmodal') { resetForm(); }
+    }
   });
 });
 
-document.getElementById('rmx').onclick         = () => { closeModal('rmodal'); resetForm(); };
-document.getElementById('nosmx').onclick        = () => closeModal('nosmodal');
+document.getElementById('rmx').onclick          = () => { closeModal('rmodal'); resetForm(); };
+document.getElementById('nosmx').onclick         = () => closeModal('nosmodal');
 document.getElementById('nos-modal-close').onclick = () => closeModal('nosmodal');
-document.getElementById('lcnl').onclick         = () => closeModal('lmodal');
-document.getElementById('gbtn').onclick         = doLogin;
-document.getElementById('logout-btn').onclick = async () => {
+document.getElementById('lcnl').onclick          = () => closeModal('lmodal');
+document.getElementById('gbtn').onclick          = doLogin;
+document.getElementById('logout-btn').onclick    = async () => {
   const { error } = await sb.auth.signOut();
   if (error) console.error('[Auth] Error al cerrar sesión:', error);
 };
 
-// ══════════════════════════════════════
-// BUTTONS
-// ══════════════════════════════════════
-const repFlow = () => { if(!selectedBarrio) { toast('Primero hacé click en tu barrio en el mapa 👆','err'); } else { startRepFlow(); } };
+// ── NAV BUTTONS ────────────────────────────────────────
+const repFlow = () => {
+  if (!currentUser) { openModal('lmodal'); return; }
+  if (!selectedBarrio) {
+    setPickMode(true);
+    document.getElementById('hero').scrollIntoView({ behavior: 'smooth' });
+    toast('📍 Hacé click en tu barrio en el mapa', '');
+    return;
+  }
+  startRepFlow();
+};
 
-document.getElementById('rep-nav').onclick       = () => { selectedBarrio = selectedBarrio || null; startRepFlow(); };
-document.getElementById('hero-rep').onclick      = repFlow;
-document.getElementById('nos-rep-btn').onclick   = repFlow;
-document.getElementById('como-rep-btn').onclick  = repFlow;
-document.getElementById('hero-nos').onclick      = () => openModal('nosmodal');
-document.getElementById('nos-nav').onclick       = () => openModal('nosmodal');
-document.getElementById('nos-modal-rep').onclick = () => { closeModal('nosmodal'); repFlow(); };
-document.getElementById('como-nav').onclick      = () => document.getElementById('como').scrollIntoView({ behavior: 'smooth' });
+document.getElementById('rep-nav').onclick        = repFlow;
+document.getElementById('hero-rep').onclick       = repFlow;
+document.getElementById('nos-rep-btn').onclick    = repFlow;
+document.getElementById('como-rep-btn').onclick   = repFlow;
+document.getElementById('nos-modal-rep').onclick  = () => { closeModal('nosmodal'); repFlow(); };
+document.getElementById('hero-nos').onclick       = () => openModal('nosmodal');
+document.getElementById('nos-nav').onclick        = () => openModal('nosmodal');
+document.getElementById('como-nav').onclick       = () => document.getElementById('como').scrollIntoView({ behavior: 'smooth' });
+document.getElementById('don-nav').onclick        = () => window.open(DONATION_URL, '_blank');
 
 document.addEventListener('keydown', e => {
   if (e.key === 'Escape') {
     ['lmodal','rmodal','nosmodal'].forEach(closeModal);
     resetForm();
+    setPickMode(false);
   }
 });
 
-// ══════════════════════════════════════
-// TOAST
-// ══════════════════════════════════════
+// ── TOAST ──────────────────────────────────────────────
 function toast(msg, type) {
   const el = document.getElementById('toast');
   el.textContent = msg;
   el.className = 'show' + (type ? ' ' + type : '');
   clearTimeout(toastT);
-  toastT = setTimeout(() => { el.className = ''; }, 4200);
+  toastT = setTimeout(() => { el.className = ''; }, 4500);
 }
 
-// ══════════════════════════════════════
-// INIT
-// ══════════════════════════════════════
+// ── INIT ───────────────────────────────────────────────
 checkSession();
 loadReports();
 </script>
