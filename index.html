@@ -911,9 +911,9 @@ footer a{color:inherit;text-decoration:none}
 // CONFIG — pegá tu anon key de Supabase → Settings → API
 // ══════════════════════════════════════════════════════
 const SURL = 'https://wdnxnnmnctoqbcbbwaxw.supabase.co';
-const SKEY = 'TU_ANON_PUBLIC_KEY';
+const SKEY = 'sb_publishable_Q5xJtOK-gP79c15pEV2w_Q_a4yTYFUk';
 // Donación — reemplazá con tu link de Mercado Pago cuando lo tengas
-const DONATION_URL = 'https://mpago.la/1fomn2M';
+const DONATION_URL = 'https://link.mercadopago.com.ar/callescaba';
 
 const sb = supabase.createClient(SURL, SKEY);
 document.getElementById('don-link').href = DONATION_URL;
@@ -958,7 +958,7 @@ document.querySelectorAll('.bgroup').forEach(g => {
 // ── LOAD REPORTS ───────────────────────────────────────
 async function loadReports() {
   try {
-    const { data, error } = await sb.from('reportes').select('barrio,estado,confirmed');
+    const { data, error } = await sb.from('reportes').select('barrio,estado,confirmed,tipo');
     if (error) throw error;
     reports = data || [];
   } catch(e) {
@@ -987,89 +987,154 @@ function updateStats() {
 }
 
 function updateHeat() {
+  // Count active reports per barrio
   const counts = {};
   reports.filter(r => r.estado !== 'resuelto').forEach(r => {
-    counts[r.barrio] = (counts[r.barrio] || 0) + 1;
+    if (!counts[r.barrio]) counts[r.barrio] = { total: 0, confirmed: 0 };
+    counts[r.barrio].total++;
+    if (r.confirmed) counts[r.barrio].confirmed++;
   });
-  const maxC = Math.max(...Object.values(counts), 1);
 
   document.querySelectorAll('.bpath').forEach(p => {
     const name = p.closest('.bgroup')?.getAttribute('data-n');
-    const c = counts[name] || 0;
-    const ratio = c / maxC;
+    const data = counts[name] || { total: 0, confirmed: 0 };
     p.classList.remove('hot1','hot2','hot3');
-    if      (ratio > .65) p.classList.add('hot3');
-    else if (ratio > .35) p.classList.add('hot2');
-    else if (ratio > .08) p.classList.add('hot1');
+
+    // hot3 (rojo intenso): 3+ reportes confirmados en ese barrio
+    if (data.confirmed >= 3) {
+      p.classList.add('hot3');
+    }
+    // hot2 (naranja): 2 confirmados, o 5+ activos
+    else if (data.confirmed >= 2 || data.total >= 5) {
+      p.classList.add('hot2');
+    }
+    // hot1 (naranja suave): al menos 1 confirmado, o 2+ activos
+    else if (data.confirmed >= 1 || data.total >= 2) {
+      p.classList.add('hot1');
+    }
   });
 }
 
 // ── AUTH ───────────────────────────────────────────────
+// Handles 3 scenarios:
+// A) Page load with existing session (user already logged in)
+// B) Page load after OAuth redirect (hash contains access_token)
+// C) User clicks login button → Google popup/redirect
+
+function afterLogin(user) {
+  // Called whenever we confirm a valid logged-in user
+  setUser(user);
+  closeModal('lmodal');
+  const firstName = user.user_metadata?.full_name?.split(' ')[0] || user.email?.split('@')[0] || 'vecino';
+  toast('✅ ¡Hola, ' + firstName + '! Ahora hacé click en tu barrio.', 'ok');
+
+  const pending = sessionStorage.getItem('pendingBarrio');
+  if (pending) {
+    sessionStorage.removeItem('pendingBarrio');
+    selectedBarrio = pending;
+    document.getElementById('bsel-name').textContent = pending;
+    checkNearby();
+    setTimeout(() => openModal('rmodal'), 700);
+  } else {
+    // No barrio saved — activate pick mode on the map
+    setTimeout(() => {
+      setPickMode(true);
+      document.getElementById('hero').scrollIntoView({ behavior: 'smooth' });
+    }, 500);
+  }
+}
+
 async function checkSession() {
   try {
-    console.log('[Auth] Verificando sesión...');
-    const { data: { session }, error: sessErr } = await sb.auth.getSession();
-    if (sessErr) console.error('[Auth] getSession error:', sessErr);
+    console.log('[Auth] checkSession start');
 
-    if (session?.user) {
-      console.log('[Auth] Sesión activa:', session.user.email);
-      setUser(session.user);
-      const pending = sessionStorage.getItem('pendingBarrio');
-      if (pending) {
-        sessionStorage.removeItem('pendingBarrio');
-        selectedBarrio = pending;
-        document.getElementById('bsel-name').textContent = pending;
-        checkNearby();
-        setTimeout(() => openModal('rmodal'), 500);
+    // Step 1: listen for ALL auth events (must be set up BEFORE getSession)
+    sb.auth.onAuthStateChange((event, session) => {
+      console.log('[Auth] event:', event, '| user:', session?.user?.email || 'none');
+
+      if (event === 'SIGNED_IN' && session?.user) {
+        afterLogin(session.user);
       }
-    } else {
-      console.log('[Auth] Sin sesión activa.');
+      if (event === 'SIGNED_OUT') {
+        setUser(null);
+        toast('Sesión cerrada', '');
+      }
+      if (event === 'TOKEN_REFRESHED' && session?.user) {
+        setUser(session.user);
+      }
+    });
+
+    // Step 2: check for existing session (covers page reload + OAuth redirect)
+    const { data: { session }, error } = await sb.auth.getSession();
+    if (error) {
+      console.error('[Auth] getSession error:', error.message);
+      return;
     }
 
-    sb.auth.onAuthStateChange((event, s) => {
-      console.log('[Auth] onAuthStateChange →', event, s?.user?.email || 'sin usuario');
-      setUser(s?.user || null);
-      if (event === 'SIGNED_IN') {
-        closeModal('lmodal');
-        const name = s.user.user_metadata?.full_name || s.user.email || 'vecino';
-        toast('✅ ¡Bienvenido, ' + name.split(' ')[0] + '!', 'ok');
+    if (session?.user) {
+      console.log('[Auth] Session found on load:', session.user.email);
+      // Check if this is a fresh OAuth redirect (hash in URL) or just an existing session
+      const isOAuthRedirect = window.location.hash.includes('access_token');
+      if (isOAuthRedirect) {
+        // Clean URL hash without triggering another redirect
+        window.history.replaceState(null, '', window.location.pathname);
+        afterLogin(session.user);
+      } else {
+        // Returning visitor with existing session — just restore silently
+        setUser(session.user);
         const pending = sessionStorage.getItem('pendingBarrio');
         if (pending) {
           sessionStorage.removeItem('pendingBarrio');
           selectedBarrio = pending;
           document.getElementById('bsel-name').textContent = pending;
           checkNearby();
-          setTimeout(() => openModal('rmodal'), 600);
-        } else {
-          setTimeout(() => {
-            setPickMode(true);
-            document.getElementById('hero').scrollIntoView({ behavior: 'smooth' });
-          }, 600);
+          setTimeout(() => openModal('rmodal'), 400);
         }
       }
-      if (event === 'SIGNED_OUT') toast('Sesión cerrada', '');
-    });
+    } else {
+      console.log('[Auth] No active session.');
+    }
+
   } catch(e) {
-    console.error('[Auth] Excepción en checkSession:', e);
+    console.error('[Auth] Exception in checkSession:', e);
   }
 }
 
 async function doLogin() {
+  // Validate Supabase key before attempting login
+  if (SKEY === 'TU_ANON_PUBLIC_KEY' || !SKEY || SKEY.length < 20) {
+    toast('⚠️ Falta configurar la clave de Supabase. Ver instrucciones.', 'err');
+    console.error('[Auth] SKEY no configurada. Pegá tu anon key de Supabase en el código.');
+    return;
+  }
+
   try {
+    // Save barrio selection before redirect
     if (selectedBarrio) sessionStorage.setItem('pendingBarrio', selectedBarrio);
+
     const redirectTo = window.location.origin + window.location.pathname;
-    console.log('[Auth] Iniciando OAuth. redirectTo:', redirectTo);
-    const { error } = await sb.auth.signInWithOAuth({
+    console.log('[Auth] Starting OAuth. redirectTo:', redirectTo);
+
+    const { data, error } = await sb.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo }
+      options: {
+        redirectTo: redirectTo,
+        queryParams: {
+          access_type: 'offline',
+          prompt: 'select_account'   // Forces Google account picker every time
+        }
+      }
     });
+
     if (error) {
-      console.error('[Auth] signInWithOAuth error:', error);
-      toast('❌ Error al iniciar sesión: ' + error.message, 'err');
+      console.error('[Auth] OAuth error:', error);
+      toast('❌ Error: ' + error.message, 'err');
+    } else {
+      console.log('[Auth] OAuth initiated, redirecting to Google...', data);
     }
   } catch(e) {
-    console.error('[Auth] Excepción en doLogin:', e);
-    toast('❌ Error inesperado. Abrí F12 para detalles.', 'err');
+    console.error('[Auth] Exception in doLogin:', e);
+    toast('❌ Error inesperado. Abrí F12 para ver detalles.', 'err');
   }
 }
 
@@ -1129,10 +1194,16 @@ document.getElementById('sbtn').addEventListener('click', async () => {
   const btn = document.getElementById('sbtn');
   btn.textContent = 'Enviando…'; btn.disabled = true;
 
+  // Count existing reports for same barrio+calle+tipo combination
+  const calleNorm = calle.toLowerCase().trim();
   const nearbyCount = reports.filter(r =>
-    r.barrio === selectedBarrio && r.tipo === tipo && r.estado !== 'resuelto'
+    r.barrio === selectedBarrio &&
+    r.tipo === tipo &&
+    r.estado !== 'resuelto'
   ).length;
+  // This report becomes the 3rd (or more) → mark as confirmed
   const isConf = nearbyCount >= 2;
+  console.log('[Report] nearbyCount:', nearbyCount, '→ confirmed:', isConf);
 
   const row = {
     user_id:     currentUser.id,
